@@ -27,7 +27,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "format": "prettier --check \"src/**/*.tsx\""
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -35,7 +36,9 @@
   "prettier": {
     "trailingComma": "all",
     "tabWidth": 2,
-    "singleQuote": true
+    "singleQuote": true,
+    "jsxSingleQuote":true,
+    "arrowParens": "avoid"
   },
   "browserslist": {
     "production": [
