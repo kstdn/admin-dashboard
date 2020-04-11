@@ -7,7 +7,7 @@ import { Container } from './Container';
 import { Main } from './Container/Main';
 import { Sidebar } from './Container/Sidebar';
 import { SidebarLink } from './Container/Sidebar/SidebarLink';
-import { RoutePaths, Routes } from './Routes';
+import { Route, Routes } from './Routes';
 import { useTheme } from './useTheme';
 import { Router } from 'react-router-dom';
 import history from './../browser-history';
@@ -21,10 +21,10 @@ export const App: FC = () => {
       <Container>
         <Router history={history}>
           <Sidebar>
-            <SidebarLink to={RoutePaths.Authentication} icon={<User />}>
+            <SidebarLink to={Route.Authentication} icon={<User />}>
               Login
             </SidebarLink>
-            <SidebarLink to={RoutePaths.Dashboard} icon={<Grid />}>
+            <SidebarLink to={Route.Dashboard} icon={<Grid />}>
               Dashboard
             </SidebarLink>
             <Divider />
