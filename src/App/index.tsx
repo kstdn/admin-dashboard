@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Grid, User } from 'react-feather';
 import { Divider } from '../shared/components/Divider';
 import { ThemeToggle } from '../shared/components/ThemeToggle';
-import { GlobalStyles } from '../styles/global.styles';
+import { GlobalStyle } from 'styles/global.style';
 import { Container } from './Container';
 import { Main } from './Container/Main';
 import { Sidebar } from './Container/Sidebar';
@@ -17,7 +17,7 @@ export const App: FC = () => {
 
   return (
     <>
-      <GlobalStyles theme={theme} />
+      <GlobalStyle theme={theme} />
       <Container>
         <Router history={history}>
           <Sidebar>

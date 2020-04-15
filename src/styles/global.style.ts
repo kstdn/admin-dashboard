@@ -3,7 +3,7 @@ import { createGlobalStyle } from 'styled-components/macro';
 import { lightThemeVars } from './light.theme';
 import { darkThemeVars } from './dark.theme';
 
-export const GlobalStyles = createGlobalStyle`
+export const GlobalStyle = createGlobalStyle`
   ${normalize()}
 
   :root {
