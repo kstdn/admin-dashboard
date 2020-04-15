@@ -10,7 +10,7 @@ import { SidebarLink } from './Container/Sidebar/SidebarLink';
 import { Route, Routes } from './Routes';
 import { useTheme } from './useTheme';
 import { Router } from 'react-router-dom';
-import history from './../browser-history';
+import history from 'util/history';
 
 export const App: FC = () => {
   const [theme, toggleTheme] = useTheme();
