@@ -9,7 +9,7 @@ export const PageError = () => {
   return (
     <div>
       There has been an error
-      <button onClick={redirect}>Go to Dashboard</button>
+      <button onClick={redirect}>Go to Home</button>
     </div>
   );
 };
