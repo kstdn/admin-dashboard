@@ -1,6 +1,6 @@
 import { push } from 'connected-react-router';
 import { delay, put, takeLeading } from 'redux-saga/effects';
-import { Route } from '../../shared/route.enum';
+import { Route } from 'shared/route.enum';
 import { login, loginSuccess } from '../actions';
 
 export function* watchLogin() {

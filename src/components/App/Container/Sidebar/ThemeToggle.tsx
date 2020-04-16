@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
-import { ThemeMode } from '../../../App/useTheme';
-import { SidebarLink } from '../../../App/Container/Sidebar/SidebarLink';
-import { Sun, Moon } from 'react-feather';
+import { Moon, Sun } from 'react-feather';
+import { SidebarLink } from './SidebarLink';
+import { ThemeMode } from '../../useTheme';
 
 type Props = {
   theme: ThemeMode;

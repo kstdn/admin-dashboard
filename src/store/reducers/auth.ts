@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { Status } from '../../util/status';
-import { login, loginSuccess, loginFailure } from '../actions';
+import { Status } from 'util/status';
+import { login, loginFailure, loginSuccess } from '../actions';
 
 export type AuthState = {
   user: string | undefined;

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Redirect, Route as RouteComp, Switch } from 'react-router-dom';
+import { PageError } from 'shared/components/PageError';
+import { Route } from 'shared/route.enum';
 import { Dashboard } from '../../Dashboard';
-import { PageError } from '../../shared/components';
-import { Route } from '../../shared/route.enum';
 
 export const AuthenticatedRoutes = () => (
   <Switch>

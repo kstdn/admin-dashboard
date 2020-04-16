@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { getIsAuthenticated } from '../../store/selectors';
+import { getIsAuthenticated } from 'store/selectors';
 import { ThemeMode } from '../useTheme';
 import { AuthenticatedSidebar } from './AuthenticatedSidebar';
 import { UnauthenticatedSidebar } from './UnauthenticatedSidebar';

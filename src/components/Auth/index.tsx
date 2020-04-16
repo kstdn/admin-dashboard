@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import { login } from 'store/actions';
 import styled from 'styled-components/macro';
-import { login } from '../store/actions';
 
 const AuthFormContainer = styled.div`
   background: red;

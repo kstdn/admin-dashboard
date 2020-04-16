@@ -1,11 +1,11 @@
 import React from 'react';
 import { User } from 'react-feather';
+import { Divider } from 'shared/components/Divider';
+import { Route } from 'shared/route.enum';
 import { Props } from '.';
-import { Divider } from '../../shared/components/Divider';
-import { ThemeToggle } from '../../shared/components/ThemeToggle';
-import { Route } from '../../shared/route.enum';
 import { Sidebar } from '../Container/Sidebar';
 import { SidebarLink } from '../Container/Sidebar/SidebarLink';
+import { ThemeToggle } from '../Container/Sidebar/ThemeToggle';
 
 export const UnauthenticatedSidebar = ({ theme, toggleTheme }: Props) => {
   return (
