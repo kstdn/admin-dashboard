@@ -1,6 +1,14 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { Status } from 'util/status';
-import { login, loginFailure, loginSuccess } from '../actions';
+import {
+  appInit,
+  login,
+  loginFailure,
+  loginSuccess,
+  logout,
+  refreshSessionFailure,
+  refreshSessionSuccess,
+} from '../actions';
 
 export type AuthState = {
   user: string | undefined;
@@ -14,6 +22,17 @@ export const authReducer = createReducer<AuthState>(
   },
   builder =>
     builder
+      .addCase(appInit, (state, action) => {
+        state.status = Status.Loading;
+      })
+      .addCase(refreshSessionSuccess, (state, action) => {
+        state.status = Status.Resolved;
+        state.user = action.payload;
+      })
+      .addCase(refreshSessionFailure, (state, action) => {
+        state.status = Status.Idle;
+        state.user = undefined;
+      })
       .addCase(login, (state, action) => {
         state.status = Status.Loading;
       })
@@ -23,5 +42,10 @@ export const authReducer = createReducer<AuthState>(
       })
       .addCase(loginFailure, (state, action) => {
         state.status = Status.Rejected;
+        state.user = undefined;
+      })
+      .addCase(logout, state => {
+        state.status = Status.Idle;
+        state.user = undefined;
       }),
 );
