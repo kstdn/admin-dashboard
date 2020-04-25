@@ -6,10 +6,11 @@ export const Sidebar = (() => {
     'calc(var(--base-icon-width) + (2 * var(--base-padding)))';
 
   return styled.nav<{ open: boolean }>`
+    flex-shrink: 0;
     width: ${props => (props.open ? '200px' : closedWidth)};
     padding: var(--base-padding);
     background-color: var(--primary);
-    color: var(--primary-text);
+    color: var(--primary-contrast);
     display: flex;
     flex-direction: column;
     overflow: hidden;

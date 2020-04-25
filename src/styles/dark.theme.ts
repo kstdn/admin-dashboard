@@ -4,13 +4,13 @@ export const darkThemeVars = `
   --bg-secondary-alt: #757575;
   --text-color: white;
   --primary: #002233;
-  --primary-text: white;  
+  --primary-contrast: white;  
   --accent: orange;
-  --accent-text: white;
+  --accent-contrast: white;
   --neutral: gray;
-  --neutral-text: black;
+  --neutral-contrast: black;
   --success: green;
-  --success-text: black;
+  --success-contrast: black;
   --danger: red;
-  --danger-text: black;
+  --danger-contrast: black;
 `;

@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import styled from 'styled-components/macro';
 
-const StyledContainer = styled.main`
+const StyledContainer = styled.div`
   display: flex;
   height: 100%;
 `;
