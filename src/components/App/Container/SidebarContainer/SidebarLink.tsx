@@ -1,6 +1,6 @@
-import styled from 'styled-components/macro';
 import React, { FC } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+import styled from 'styled-components/macro';
 
 const StyledSidebarLink = styled.div<any>`
   display: flex;

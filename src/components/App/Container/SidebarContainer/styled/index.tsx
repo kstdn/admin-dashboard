@@ -1,5 +1,5 @@
-import styled from 'styled-components/macro';
 import { ArrowLeft } from 'react-feather';
+import styled from 'styled-components/macro';
 
 export const Sidebar = (() => {
   const closedWidth =
