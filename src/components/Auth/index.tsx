@@ -1,28 +1,17 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { login } from 'store/actions';
-import styled from 'styled-components/macro';
-
-const AuthFormContainer = styled.div`
-  background: red;
-  padding: 20px;
-`;
+import { useSelector } from 'react-redux';
+import { getStatus } from 'store/selectors/auth';
+import { Status } from 'util/status';
+import { LoginForm } from './LoginForm';
+import * as Styled from './styled';
 
 export const Authentication = () => {
-  const dispatch = useDispatch();
-
-  const handleClick = () => {
-    dispatch(login());
-  };
+  const status = useSelector(getStatus);
+  const showLoginForm = status !== Status.Loading;
 
   return (
-    <>
-      <AuthFormContainer>
-        Login
-        <input type='text' />
-        <input type='password' />
-      </AuthFormContainer>
-      <button onClick={handleClick}>LOG ME</button>
-    </>
+    <Styled.AuthenticationContainer>
+      {showLoginForm ? <LoginForm /> : <div>Loading...</div>}
+    </Styled.AuthenticationContainer>
   );
 };
