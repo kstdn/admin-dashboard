@@ -1,0 +1,10 @@
+{
+  "import * as Styled from './styled'": {
+    "scope": "javascript,typescript,javascriptreact,typescriptreact",
+    "prefix": "sty",
+    "body": [
+      "import * as Styled from './styled'"
+    ],
+    "description": "import * as Styled from './styled'"
+  }
+}

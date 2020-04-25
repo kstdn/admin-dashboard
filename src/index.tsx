@@ -1,11 +1,14 @@
+import { App } from 'components/App';
 import { ConnectedRouter } from 'connected-react-router';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import { store } from 'store';
 import 'typeface-montserrat';
 import history from 'util/history';
-import { App } from './components/App';
-import { store } from './store';
+import { configureAxios } from 'util/configureAxios';
+
+configureAxios(store);
 
 ReactDOM.render(
   <React.StrictMode>

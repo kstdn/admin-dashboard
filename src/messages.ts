@@ -1,0 +1,1 @@
+export const NO_USERNAME_IN_ACCESS_TOKEN = 'No username found in access token';
