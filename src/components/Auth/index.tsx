@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import Loader from 'shared/components/Loader';
 import { getStatus } from 'store/selectors/auth';
 import { Status } from 'util/status';
 import { LoginForm } from './LoginForm';
@@ -11,7 +12,7 @@ export const Authentication = () => {
 
   return (
     <Styled.AuthenticationContainer>
-      {showLoginForm ? <LoginForm /> : <div>Loading...</div>}
+      {showLoginForm ? <LoginForm /> : <Loader />}
     </Styled.AuthenticationContainer>
   );
 };
