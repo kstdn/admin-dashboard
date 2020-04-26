@@ -1,6 +1,8 @@
 import { refreshAccessToken } from 'api';
 import { accessTokenExists, getCurrentUser } from 'api/util';
+import { push } from 'connected-react-router';
 import { put, take } from 'redux-saga/effects';
+import { Route } from 'shared/route.enum';
 import {
   appInit,
   loginSuccess,
@@ -33,4 +35,5 @@ export function* setCurrentUser(viaRefresh: boolean = false) {
   } else {
     yield put(loginSuccess(username));
   }
+  yield put(push(Route.Root));
 }

@@ -30,7 +30,7 @@ export const authReducer = createReducer<AuthState>(
         state.user = action.payload;
       })
       .addCase(refreshSessionFailure, (state, action) => {
-        state.status = Status.Idle;
+        state.status = Status.Rejected;
         state.user = undefined;
       })
       .addCase(login, (state, action) => {
