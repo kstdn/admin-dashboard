@@ -1,4 +1,4 @@
-import { login } from 'api';
+import { login, logout } from 'api';
 import { getCurrentUser } from 'api/util';
 import { push } from 'connected-react-router';
 import { all, fork, put, takeLeading } from 'redux-saga/effects';
@@ -32,6 +32,7 @@ export function* watchLogout() {
 }
 
 function* logoutWorker() {
+  yield logout();
   yield put(logoutSuccess());
   yield put(push(Route.Root));
 }

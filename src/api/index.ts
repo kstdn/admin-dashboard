@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { ApiRoute } from './api-route';
-import { removeAccessToken } from './util';
+import { removeAccessToken, removeRefreshToken } from './util';
 
 export const login = async (username: string, password: string) => {
   return await axios.post(ApiRoute.Login, {
@@ -11,6 +11,7 @@ export const login = async (username: string, password: string) => {
 
 export const logout = () => {
   removeAccessToken();
+  removeRefreshToken();
 };
 
 export const refreshAccessToken = async () => {
