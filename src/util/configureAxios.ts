@@ -11,12 +11,11 @@ import { refreshTokenFailure } from 'store/actions';
 
 export const configureAxios = (store: Store) => {
   axios.defaults.baseURL = baseUrl;
-  axios.defaults.transformResponse = response => response.data;
   axios.defaults.withCredentials = true;
   axios.defaults.headers.post['Content-Type'] =
     'application/x-www-form-urlencoded';
   axios.interceptors.response.use(
-    res => res,
+    res => res.data.data,
     error => {
       if (isAccessTokenExpiredError(error)) {
         return resetTokenAndReattemptRequest(error, store.dispatch);
