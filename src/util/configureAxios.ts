@@ -1,3 +1,4 @@
+import { Dispatch } from '@reduxjs/toolkit';
 import { refreshAccessToken } from 'api';
 import axios, { AxiosError } from 'axios';
 import {
@@ -6,6 +7,7 @@ import {
   unauthorizedErrorCode,
 } from 'constant-values';
 import { Store } from 'store';
+import { refreshTokenFailure } from 'store/actions';
 
 export const configureAxios = (store: Store) => {
   axios.defaults.baseURL = baseUrl;
@@ -17,7 +19,7 @@ export const configureAxios = (store: Store) => {
     res => res,
     error => {
       if (isAccessTokenExpiredError(error)) {
-        return resetTokenAndReattemptRequest(error);
+        return resetTokenAndReattemptRequest(error, store.dispatch);
       }
       // If the error is due to other reasons, we just throw it back to axios
       return Promise.reject(error);
@@ -30,7 +32,10 @@ let isAlreadyFetchingAccessToken = false;
 // This is the list of waiting requests that will retry after the access token refresh completes
 let subscribers: Function[] = [];
 
-async function resetTokenAndReattemptRequest(error: AxiosError) {
+async function resetTokenAndReattemptRequest(
+  error: AxiosError,
+  dispatch: Dispatch,
+) {
   try {
     /* We create a new Promise that will retry the request,
     clone all the request configuration from the failed
@@ -46,12 +51,19 @@ async function resetTokenAndReattemptRequest(error: AxiosError) {
 
     if (!isAlreadyFetchingAccessToken) {
       isAlreadyFetchingAccessToken = true;
-      const response = await refreshAccessToken();
-      if (response.status !== createdStatusCode) {
+
+      try {
+        const response = await refreshAccessToken();
+        if (response.status !== createdStatusCode) {
+          onAccessTokenFetchError(dispatch);
+          return Promise.reject(error);
+        }
+        isAlreadyFetchingAccessToken = false;
+        onAccessTokenFetchSuccess();
+      } catch {
+        onAccessTokenFetchError(dispatch);
         return Promise.reject(error);
       }
-      isAlreadyFetchingAccessToken = false;
-      onAccessTokenFetched();
     }
     return retryOriginalRequest;
   } catch (err) {
@@ -59,7 +71,11 @@ async function resetTokenAndReattemptRequest(error: AxiosError) {
   }
 }
 
-const onAccessTokenFetched = () => {
+const onAccessTokenFetchError = (dispatch: Dispatch) => {
+  dispatch(refreshTokenFailure());
+};
+
+const onAccessTokenFetchSuccess = () => {
   subscribers.forEach(callback => callback());
   subscribers = [];
 };

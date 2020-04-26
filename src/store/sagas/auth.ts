@@ -1,7 +1,7 @@
 import { login, logout } from 'api';
 import { getCurrentUser } from 'api/util';
 import { push } from 'connected-react-router';
-import { all, fork, put, takeLeading } from 'redux-saga/effects';
+import { all, fork, put, takeEvery, takeLeading } from 'redux-saga/effects';
 import { Route } from 'shared/route.enum';
 import {
   login as loginAction,
@@ -9,6 +9,7 @@ import {
   loginSuccess,
   logout as logoutAction,
   logoutSuccess,
+  refreshTokenFailure,
 } from '../actions';
 
 export function* watchLogin() {
@@ -37,6 +38,18 @@ function* logoutWorker() {
   yield put(push(Route.Root));
 }
 
+export function* watchRefreshTokenFailure() {
+  yield takeEvery(refreshTokenFailure, refreshTokenFailureWorker);
+}
+
+function* refreshTokenFailureWorker() {
+  yield put(push(Route.Root));
+}
+
 export function* authSaga() {
-  yield all([fork(watchLogin), fork(watchLogout)]);
+  yield all([
+    fork(watchLogin),
+    fork(watchLogout),
+    fork(watchRefreshTokenFailure),
+  ]);
 }

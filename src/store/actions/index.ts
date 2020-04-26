@@ -2,8 +2,8 @@ import { createAction } from '@reduxjs/toolkit';
 
 export const appInit = createAction('APP_INIT');
 
-export const refreshSessionSuccess = createAction<string>('REFRESH_SESSION_SUCCESS');
-export const refreshSessionFailure = createAction('REFRESH_SESSION_FAILURE');
+export const refreshTokenSuccess = createAction<string>('REFRESH_TOKEN_SUCCESS');
+export const refreshTokenFailure = createAction('REFRESH_TOKEN_FAILURE');
 
 export const login = createAction<{ username: string; password: string }>(
   'LOGIN',

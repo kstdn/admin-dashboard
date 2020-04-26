@@ -6,8 +6,8 @@ import {
   loginFailure,
   loginSuccess,
   logout,
-  refreshSessionFailure,
-  refreshSessionSuccess,
+  refreshTokenFailure,
+  refreshTokenSuccess,
 } from '../actions';
 
 export type AuthState = {
@@ -25,11 +25,11 @@ export const authReducer = createReducer<AuthState>(
       .addCase(appInit, (state, action) => {
         state.status = Status.Loading;
       })
-      .addCase(refreshSessionSuccess, (state, action) => {
+      .addCase(refreshTokenSuccess, (state, action) => {
         state.status = Status.Resolved;
         state.user = action.payload;
       })
-      .addCase(refreshSessionFailure, (state, action) => {
+      .addCase(refreshTokenFailure, (state, action) => {
         state.status = Status.Rejected;
         state.user = undefined;
       })

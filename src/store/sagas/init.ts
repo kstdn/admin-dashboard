@@ -6,8 +6,8 @@ import { Route } from 'shared/route.enum';
 import {
   appInit,
   loginSuccess,
-  refreshSessionFailure,
-  refreshSessionSuccess,
+  refreshTokenFailure,
+  refreshTokenSuccess,
 } from '../actions';
 
 export function* watchAppInit() {
@@ -23,7 +23,7 @@ export function* setIsAuthenticatedState() {
       yield refreshAccessToken();
       yield setCurrentUser(true);
     } catch {
-      yield put(refreshSessionFailure());
+      yield put(refreshTokenFailure());
     }
   }
 }
@@ -31,7 +31,7 @@ export function* setIsAuthenticatedState() {
 export function* setCurrentUser(viaRefresh: boolean = false) {
   const username = getCurrentUser();
   if (viaRefresh) {
-    yield put(refreshSessionSuccess(username));
+    yield put(refreshTokenSuccess(username));
   } else {
     yield put(loginSuccess(username));
   }
