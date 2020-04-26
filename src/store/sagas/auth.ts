@@ -10,6 +10,7 @@ import {
   logout as logoutAction,
   logoutSuccess,
   refreshTokenFailure,
+  appInit,
 } from '../actions';
 
 export function* watchLogin() {
@@ -36,6 +37,7 @@ function* logoutWorker() {
   yield logout();
   yield put(logoutSuccess());
   yield put(push(Route.Root));
+  yield put(appInit());
 }
 
 export function* watchRefreshTokenFailure() {
