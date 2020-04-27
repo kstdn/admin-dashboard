@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { ApiRoute } from './api-route';
+import { UserDto } from './dto/user.dto';
 import { removeAccessToken, removeRefreshToken } from './util';
 
 export const login = async (username: string, password: string) => {
@@ -19,5 +20,5 @@ export const refreshAccessToken = async () => {
 };
 
 export const getUserDetails = () => {
-  return axios.get(ApiRoute.Me);
+  return axios.get<UserDto, UserDto>(ApiRoute.Me);
 };
