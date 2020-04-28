@@ -16,7 +16,12 @@ export const Dashboard = () => {
   const statusResolved = [userDetailsStatus].every(s => s === Status.Resolved);
 
   useEffect(() => {
-    dispatch(getUserDetailsAction());
+    function getUserDetails() {
+      if (userDetailsStatus !== Status.Resolved) {
+        dispatch(getUserDetailsAction());
+      }
+    }
+    getUserDetails();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
