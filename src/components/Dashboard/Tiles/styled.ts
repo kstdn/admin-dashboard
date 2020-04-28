@@ -13,7 +13,7 @@ export const TitleRow = styled.div`
 `;
 
 export const Title = styled.span`
-  font-size: 1.2rem;
+  font-size: larger;
   font-weight: 500;
 `;
 

@@ -6,7 +6,7 @@ export const UserDetailsContainer = styled(Box)`
 `;
 
 export const Username = styled.div`
-  font-size: 1.2rem;
+  font-size: larger;
   font-weight: 500;
 `;
 
