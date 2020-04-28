@@ -1,7 +1,7 @@
 import React from 'react';
 import { User } from 'react-feather';
 import { Divider } from 'shared/components/Divider';
-import { Route } from 'shared/route.enum';
+import { Route } from 'shared/UrlRoute';
 import { Props } from '.';
 import { SidebarLink } from '../Container/SidebarContainer/SidebarLink';
 import { ThemeToggle } from '../Container/SidebarContainer/ThemeToggle';

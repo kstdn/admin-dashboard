@@ -2,7 +2,7 @@ import { refreshAccessToken } from 'api';
 import { accessTokenExists, getCurrentUser } from 'api/util';
 import { push } from 'connected-react-router';
 import { put, takeEvery } from 'redux-saga/effects';
-import { Route } from 'shared/route.enum';
+import { Route } from 'shared/UrlRoute';
 import {
   appInit,
   loginSuccess,

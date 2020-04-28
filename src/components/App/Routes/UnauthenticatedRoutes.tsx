@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect, Route as RouteComp, Switch } from 'react-router-dom';
-import { Route } from 'shared/route.enum';
+import { Route } from 'shared/UrlRoute';
 import { Authentication } from '../../Auth';
 
 export default function UnauthenticatedRoutes() {

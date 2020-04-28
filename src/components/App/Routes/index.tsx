@@ -2,7 +2,7 @@ import React, { lazy, Suspense } from 'react';
 import { useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import Loader from 'shared/components/Loader';
-import { Route } from 'shared/route.enum';
+import { Route } from 'shared/UrlRoute';
 import { getIsAuthSettled, getIsAuthenticated } from 'store/selectors';
 
 const AuthenticatedRoutes = lazy(() => import('./AuthenticatedRoutes'));

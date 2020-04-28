@@ -2,7 +2,7 @@ import { login, logout } from 'api';
 import { getCurrentUser } from 'api/util';
 import { push } from 'connected-react-router';
 import { all, fork, put, takeEvery, takeLeading } from 'redux-saga/effects';
-import { Route } from 'shared/route.enum';
+import { Route } from 'shared/UrlRoute';
 import {
   login as loginAction,
   loginFailure,
