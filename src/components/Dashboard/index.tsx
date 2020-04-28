@@ -1,8 +1,11 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import Loader from 'shared/components/Loader';
 import { getUserDetails as getUserDetailsAction } from 'store/actions';
 import { getUserDetails, getUserDetailsStatus } from 'store/selectors';
 import { Status } from 'util/status';
+import * as Styled from './styled';
+import * as Tiles from './Tiles';
 import UserDetails from './UserDetails';
 
 export const Dashboard = () => {
@@ -10,16 +13,22 @@ export const Dashboard = () => {
   const userDetailsStatus = useSelector(getUserDetailsStatus);
   const userDetails = useSelector(getUserDetails);
 
+  const statusResolved = [userDetailsStatus].every(s => s === Status.Resolved);
+
   useEffect(() => {
     dispatch(getUserDetailsAction());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return (
-    <div>
-      {userDetailsStatus === Status.Resolved && (
-        <UserDetails details={userDetails} />
-      )}
-    </div>
+  return statusResolved ? (
+    <Styled.Dashboard>
+      <Styled.DashboardHeader>
+        <UserDetails status={userDetailsStatus} details={userDetails} />
+      </Styled.DashboardHeader>
+      <Tiles.Users />
+      <Tiles.Permissions />
+    </Styled.Dashboard>
+  ) : (
+    <Loader />
   );
 };
