@@ -4,6 +4,7 @@ import { Router } from 'react-router-dom';
 import { appInit } from 'store/actions';
 import { GlobalStyle } from 'styles/global.style';
 import history from 'util/history';
+import Breadcrumbs from './Breadcrumbs';
 import { Container } from './Container';
 import { Main } from './Container/Main';
 import { Routes } from './Routes';
@@ -26,6 +27,7 @@ export const App = () => {
         <Router history={history}>
           <Sidebar theme={theme} toggleTheme={toggleTheme} />
           <Main>
+            <Breadcrumbs />
             <Routes />
           </Main>
         </Router>
