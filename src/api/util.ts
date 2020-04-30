@@ -5,7 +5,7 @@ import {
   accessTokenHeaderPayloadKey,
   refreshTokenPartialKey,
 } from 'constant-values';
-import { AccessTokenPayload } from './dto/access-token-payload.dto';
+import { AccessTokenPayload } from './modules/authentication/dto/access-token-payload.dto';
 
 export const accessTokenExists = (): boolean => {
   return !!Cookies.get(accessTokenHeaderPayloadKey);
