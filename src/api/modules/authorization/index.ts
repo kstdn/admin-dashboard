@@ -1,18 +1,18 @@
 import axios from 'axios';
 import { ApiRoute } from './../../api-route';
 import { GrantPermissionDto } from './dto/grant-permission.dto';
-import { ResourcePermission } from './dto/resource-permission.dto';
+import { ResourcePermissionDto } from './dto/resource-permission.dto';
 import { Resource } from './dto/resource.dto';
 import { Role } from './dto/role.dto';
 
 export const getPermissions = () => {
-  return axios.get<ResourcePermission[], ResourcePermission[]>(
+  return axios.get<ResourcePermissionDto[], ResourcePermissionDto[]>(
     ApiRoute.Permissions,
   );
 };
 
 export const getPermission = (id: string) => {
-  return axios.get<ResourcePermission, ResourcePermission>(
+  return axios.get<ResourcePermissionDto, ResourcePermissionDto>(
     `${ApiRoute.Permissions}/${id}`,
   );
 };
@@ -22,7 +22,7 @@ export const grantPermissionToUser = (
   resourceId: string,
   operations: GrantPermissionDto,
 ) => {
-  return axios.post<ResourcePermission, ResourcePermission>(
+  return axios.post<ResourcePermissionDto, ResourcePermissionDto>(
     ApiRoute.PermissionsUser,
     operations,
     {
@@ -39,7 +39,7 @@ export const grantPermissionToRole = (
   resourceId: string,
   operations: GrantPermissionDto,
 ) => {
-  return axios.post<ResourcePermission, ResourcePermission>(
+  return axios.post<ResourcePermissionDto, ResourcePermissionDto>(
     ApiRoute.PermissionsUser,
     operations,
     {
@@ -55,7 +55,7 @@ export const updatePermission = (
   id: string,
   operations: GrantPermissionDto,
 ) => {
-  return axios.patch<ResourcePermission, ResourcePermission>(
+  return axios.patch<ResourcePermissionDto, ResourcePermissionDto>(
     `${ApiRoute.Permissions}/${id}`,
     operations,
   );

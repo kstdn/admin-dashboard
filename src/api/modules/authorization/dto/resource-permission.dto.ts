@@ -3,7 +3,7 @@ export type ResourceDto = {
   name: string;
 }
 
-export type ResourcePermission = {
+export type ResourcePermissionDto = {
   id: string;
   resourceId: string;
   resource: ResourceDto;
