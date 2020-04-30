@@ -1,7 +1,7 @@
 import { all, fork, takeLatest, put } from 'redux-saga/effects';
 import { getUserDetails as getUserDetailsAction, getUserDetailsSuccess, getUserDetailsFailure} from 'store/actions';
-import { getUserDetails } from 'api';
-import { UserDto } from 'api/dto/user.dto';
+import { getOwnUser } from 'api';
+import { UserDto } from 'api/modules/users/dto/user.dto';
 
 export function* watchGetUserDetails() {
   yield takeLatest(getUserDetailsAction.type, getUserDetailsWorker);
@@ -9,7 +9,7 @@ export function* watchGetUserDetails() {
 
 function* getUserDetailsWorker() {
   try{
-    const details: UserDto = yield getUserDetails();
+    const details: UserDto = yield getOwnUser();
     yield put(getUserDetailsSuccess(details));
   } catch {
     yield put(getUserDetailsFailure())

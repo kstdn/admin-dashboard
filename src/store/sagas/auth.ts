@@ -21,7 +21,7 @@ function* loginWorker({
   payload: { username, password },
 }: ReturnType<typeof loginAction>) {
   try {
-    yield login(username, password);
+    yield login({ username, password });
     yield put(loginSuccess(getCurrentUser()));
     yield put(push(Route.Root));
   } catch (error) {

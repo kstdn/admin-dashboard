@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { UserDto } from 'api/dto/user.dto';
+import { UserDto } from 'api/modules/users/dto/user.dto';
 import {
   getUserDetails,
   getUserDetailsSuccess,

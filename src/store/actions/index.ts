@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import { UserDto } from 'api/dto/user.dto';
+import { UserDto } from 'api/modules/users/dto/user.dto';
 
 export const appInit = createAction('APP_INIT');
 

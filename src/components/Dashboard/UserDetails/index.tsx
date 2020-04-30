@@ -1,4 +1,4 @@
-import { UserDto } from 'api/dto/user.dto';
+import { UserDto } from 'api/modules/users/dto/user.dto';
 import React from 'react';
 import { Status } from 'util/status';
 import * as Styled from './styled';
