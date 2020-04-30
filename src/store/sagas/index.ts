@@ -3,6 +3,7 @@ import { userDetailsSaga } from 'store/sagas/user-details';
 import { authSaga } from './auth';
 import { watchAppInit } from './init';
 import { watchInitLocationChange } from './router';
+import { usersSaga } from 'store/sagas/users';
 
 export default function* rootSaga() {
   yield all([
@@ -10,5 +11,6 @@ export default function* rootSaga() {
     fork(watchInitLocationChange),
     fork(authSaga),
     fork(userDetailsSaga),
+    fork(usersSaga),
   ]);
 }
