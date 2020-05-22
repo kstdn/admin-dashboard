@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { httpClient, httpClientWithoutInterceptors } from 'util/http-client';
 import { ApiRoute } from '../../api-route';
 import { removeAccessToken, removeRefreshToken } from '../../util';
 import { ChangePasswordDto } from './dto/change-password.dto';
@@ -6,15 +6,15 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { LoginDto } from './dto/login.dto';
 
 export const register = async (createUserDto: CreateUserDto) => {
-  return axios.post(ApiRoute.Register, createUserDto);
+  return httpClient.post(ApiRoute.Register, createUserDto);
 };
 
 export const login = (loginDto: LoginDto) => {
-  return axios.post(ApiRoute.Login, loginDto);
+  return httpClient.post(ApiRoute.Login, loginDto);
 };
 
-export const refreshAccessToken = async () => {
-  return axios.post(ApiRoute.RefreshToken);
+export const refreshAccessToken = () => {
+  return httpClientWithoutInterceptors.post(ApiRoute.RefreshToken);
 };
 
 export const logout = () => {
@@ -25,5 +25,5 @@ export const logout = () => {
 };
 
 export const changePassword = (changePasswordDto: ChangePasswordDto) => {
-  return axios.patch<void, void>(ApiRoute.ChangePassword, changePasswordDto);
+  return httpClient.patch<void, void>(ApiRoute.ChangePassword, changePasswordDto);
 };

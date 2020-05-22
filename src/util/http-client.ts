@@ -1,30 +1,39 @@
 import { Dispatch } from '@reduxjs/toolkit';
 import { refreshAccessToken } from 'api';
-import axios, { AxiosError } from 'axios';
+import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 import {
   baseUrl,
   createdStatusCode,
   unauthorizedErrorCode,
 } from 'constant-values';
-import { Store } from 'store';
+import { store } from 'store';
 import { refreshTokenFailure } from 'store/actions';
 
-export const configureAxios = (store: Store) => {
-  axios.defaults.baseURL = baseUrl;
-  axios.defaults.withCredentials = true;
-  axios.defaults.headers.post['Content-Type'] =
-    'application/x-www-form-urlencoded';
-  axios.interceptors.response.use(
-    res => res.data.data,
-    error => {
-      if (isAccessTokenExpiredError(error)) {
-        return resetTokenAndReattemptRequest(error, store.dispatch);
-      }
-      // If the error is due to other reasons, we just throw it back to axios
-      return Promise.reject(error);
+const config: AxiosRequestConfig = {
+  baseURL: baseUrl,
+  withCredentials: true,
+  headers: {
+    post: {
+      'Content-Type': 'application/x-www-form-urlencoded',
     },
-  );
+  },
 };
+
+const instanceWithInterceptors = axios.create(config);
+
+instanceWithInterceptors.interceptors.response.use(
+  res => res.data.data,
+  error => {
+    if (isAccessTokenExpiredError(error)) {
+      return resetTokenAndReattemptRequest(error, store.dispatch);
+    }
+    // If the error is due to other reasons, we just throw it back to axios
+    return Promise.reject(error);
+  },
+);
+
+export const httpClient = instanceWithInterceptors;
+export const httpClientWithoutInterceptors = axios.create(config);
 
 let isAlreadyFetchingAccessToken = false;
 
@@ -43,7 +52,7 @@ async function resetTokenAndReattemptRequest(
       addSubscriber(() => {
         const errorResponse = error?.response;
         if (errorResponse) {
-          resolve(axios(errorResponse.config));
+          resolve(instanceWithInterceptors(errorResponse.config));
         }
       });
     });

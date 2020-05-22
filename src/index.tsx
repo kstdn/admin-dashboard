@@ -6,9 +6,7 @@ import { Provider } from 'react-redux';
 import { store } from 'store';
 import 'typeface-montserrat';
 import history from 'util/history';
-import { configureAxios } from 'util/configureAxios';
 
-configureAxios(store);
 
 ReactDOM.render(
   <React.StrictMode>

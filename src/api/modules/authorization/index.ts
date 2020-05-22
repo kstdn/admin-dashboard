@@ -1,3 +1,4 @@
+import { httpClient } from 'util/http-client';
 import axios from 'axios';
 import { ApiRoute } from './../../api-route';
 import { GrantPermissionDto } from './dto/grant-permission.dto';
@@ -6,13 +7,14 @@ import { Resource } from './dto/resource.dto';
 import { Role } from './dto/role.dto';
 
 export const getPermissions = () => {
-  return axios.get<ResourcePermissionDto[], ResourcePermissionDto[]>(
-    ApiRoute.Permissions,
-  );
+  return httpClient.get<
+    Paginated<ResourcePermissionDto>,
+    Paginated<ResourcePermissionDto>
+  >(ApiRoute.Permissions);
 };
 
 export const getPermission = (id: string) => {
-  return axios.get<ResourcePermissionDto, ResourcePermissionDto>(
+  return httpClient.get<ResourcePermissionDto, ResourcePermissionDto>(
     `${ApiRoute.Permissions}/${id}`,
   );
 };
@@ -22,7 +24,7 @@ export const grantPermissionToUser = (
   resourceId: string,
   operations: GrantPermissionDto,
 ) => {
-  return axios.post<ResourcePermissionDto, ResourcePermissionDto>(
+  return httpClient.post<ResourcePermissionDto, ResourcePermissionDto>(
     ApiRoute.PermissionsUser,
     operations,
     {
@@ -39,7 +41,7 @@ export const grantPermissionToRole = (
   resourceId: string,
   operations: GrantPermissionDto,
 ) => {
-  return axios.post<ResourcePermissionDto, ResourcePermissionDto>(
+  return httpClient.post<ResourcePermissionDto, ResourcePermissionDto>(
     ApiRoute.PermissionsUser,
     operations,
     {
@@ -62,19 +64,19 @@ export const updatePermission = (
 };
 
 export const deletePermission = (id: string) => {
-  return axios.delete<void, void>(`${ApiRoute.Permissions}/${id}`);
+  return httpClient.delete<void, void>(`${ApiRoute.Permissions}/${id}`);
 };
 
 export const getRoles = () => {
-  return axios.get<Role[], Role[]>(ApiRoute.Roles);
+  return httpClient.get<Role[], Role[]>(ApiRoute.Roles);
 };
 
 export const getRole = (id: string) => {
-  return axios.get<Role, Role>(`${ApiRoute.Roles}/${id}`);
+  return httpClient.get<Role, Role>(`${ApiRoute.Roles}/${id}`);
 };
 
 export const createRole = (name: string) => {
-  return axios.post<Role, Role>(`${ApiRoute.Roles}`, {
+  return httpClient.post<Role, Role>(`${ApiRoute.Roles}`, {
     params: {
       name,
     },
@@ -82,15 +84,15 @@ export const createRole = (name: string) => {
 };
 
 export const assignRole = (roleId: string, userId: string) => {
-  return axios.post<Role, Role>(`${ApiRoute.Roles}/${roleId}/user/${userId}`);
+  return httpClient.post<Role, Role>(`${ApiRoute.Roles}/${roleId}/user/${userId}`);
 };
 
 export const unassignRole = (roleId: string, userId: string) => {
-  return axios.delete<Role, Role>(`${ApiRoute.Roles}/${roleId}/user/${userId}`);
+  return httpClient.delete<Role, Role>(`${ApiRoute.Roles}/${roleId}/user/${userId}`);
 };
 
 export const updateRole = (id: string, name: string) => {
-  return axios.patch<Role, Role>(`${ApiRoute.Roles}/${id}`, {
+  return httpClient.patch<Role, Role>(`${ApiRoute.Roles}/${id}`, {
     params: {
       name,
     },
@@ -98,9 +100,9 @@ export const updateRole = (id: string, name: string) => {
 };
 
 export const deleteRole = (id: string) => {
-  return axios.delete<void, void>(`${ApiRoute.Roles}/${id}`);
+  return httpClient.delete<void, void>(`${ApiRoute.Roles}/${id}`);
 };
 
 export const getResources = () => {
-  return axios.get<Resource[], Resource[]>(ApiRoute.Resources);
+  return httpClient.get<Resource[], Resource[]>(ApiRoute.Resources);
 };
