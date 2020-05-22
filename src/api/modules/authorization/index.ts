@@ -1,8 +1,7 @@
 import { httpClient } from 'util/http-client';
-import axios from 'axios';
+import { Paginated } from '../shared/dto/Paginated';
 import { ApiRoute } from './../../api-route';
-import { GrantPermissionDto } from './dto/grant-permission.dto';
-import { ResourcePermissionDto } from './dto/resource-permission.dto';
+import { ResourcePermissionDto, ResourceActionsDto } from './dto/resource-permission.dto';
 import { Resource } from './dto/resource.dto';
 import { Role } from './dto/role.dto';
 
@@ -22,11 +21,11 @@ export const getPermission = (id: string) => {
 export const grantPermissionToUser = (
   userId: string,
   resourceId: string,
-  operations: GrantPermissionDto,
+  actions: ResourceActionsDto,
 ) => {
   return httpClient.post<ResourcePermissionDto, ResourcePermissionDto>(
     ApiRoute.PermissionsUser,
-    operations,
+    actions,
     {
       params: {
         userId,
@@ -39,11 +38,11 @@ export const grantPermissionToUser = (
 export const grantPermissionToRole = (
   roleId: string,
   resourceId: string,
-  operations: GrantPermissionDto,
+  actions: ResourceActionsDto,
 ) => {
   return httpClient.post<ResourcePermissionDto, ResourcePermissionDto>(
     ApiRoute.PermissionsUser,
-    operations,
+    actions,
     {
       params: {
         roleId,
@@ -55,11 +54,11 @@ export const grantPermissionToRole = (
 
 export const updatePermission = (
   id: string,
-  operations: GrantPermissionDto,
+  actions: ResourceActionsDto,
 ) => {
-  return axios.patch<ResourcePermissionDto, ResourcePermissionDto>(
+  return httpClient.patch<ResourceActionsDto, ResourceActionsDto>(
     `${ApiRoute.Permissions}/${id}`,
-    operations,
+    actions,
   );
 };
 

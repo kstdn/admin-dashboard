@@ -3,12 +3,7 @@ export type ResourceDto = {
   name: string;
 }
 
-export type ResourcePermissionDto = {
-  id: string;
-  resourceId: string;
-  resource: ResourceDto;
-  userId?: string;
-  roleId?: string;
+export type ResourceActionsDto = {
   createOwn: boolean;
   readOwn: boolean;
   updateOwn: boolean;
@@ -17,4 +12,14 @@ export type ResourcePermissionDto = {
   readAny: boolean;
   updateAny: boolean;
   deleteAny: boolean;
+}
+
+export type ResourcePermissionDto = ResourceActionsDto & {
+  id: string;
+  resourceId: string;
+  resourceName: string;
+  userId?: string;
+  userUsername?: string;
+  roleId?: string;
+  roleName?: string;
 }
