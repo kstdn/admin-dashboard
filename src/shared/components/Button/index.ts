@@ -8,4 +8,9 @@ export const Button = styled(Box).attrs(_ => ({
 }))<ButtonHTMLAttributes<BoxProps>>`
   border: 0;
   text-transform: uppercase;
+
+  &[disabled] {
+    background-color: var(--neutral);
+    color: var(--neutral-contrast);
+  }
 `;
