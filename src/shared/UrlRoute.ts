@@ -4,5 +4,7 @@ export const Route = {
   Dashboard: {
     Root: '/dashboard',
     Users: '/dashboard/users',
+    Permissions: '/dashboard/permissions',
+    PermissionsNew: '/dashboard/permissions/new',
   },
 };
