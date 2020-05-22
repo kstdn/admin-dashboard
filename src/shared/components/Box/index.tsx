@@ -10,5 +10,6 @@ const Box = styled.div<BoxProps>`
     height: 100%;
     width: 100%;
   `}
+  ${props => props.includePadding === false && `padding: 0;`}
 `;
 export default Box;

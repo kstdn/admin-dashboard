@@ -1,7 +1,11 @@
 import { Color } from 'shared/color.type';
 
-export type BoxProps = {
+export type BoxColorProps = {
   color?: Color;
   inverted?: boolean;
+};
+
+export type BoxProps = BoxColorProps & {
   fillContainer?: boolean;
+  includePadding?: boolean;
 };
