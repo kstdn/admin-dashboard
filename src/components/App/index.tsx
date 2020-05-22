@@ -1,3 +1,4 @@
+import MainContent from 'components/App/Container/MainContent';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Router } from 'react-router-dom';
@@ -28,7 +29,9 @@ export const App = () => {
           <Sidebar theme={theme} toggleTheme={toggleTheme} />
           <Main>
             <Breadcrumbs />
-            <Routes />
+            <MainContent>
+              <Routes />
+            </MainContent>
           </Main>
         </Router>
       </Container>
