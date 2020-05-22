@@ -1,16 +1,23 @@
+import { darken, lighten } from 'polished';
+
+const primary = 'dodgerblue';
+
 export const lightThemeVars = `
-  --bg-body: #eeeeee;
-  --bg-secondary: #bdbdbd;
-  --bg-secondary-alt: #757575;
-  --text-color: black;
-  --primary: dodgerblue;
+  --bg-body: #e6e6e6;
+  --bg-secondary: #fafafa;
+  --bg-secondary-alt: #d9d9d9;
+  --text-color: #333333;
+  --primary: ${primary};
+  --primary-light: ${lighten(0.2, primary)};
+  --primary-lighter: ${lighten(0.3, primary)};
+  --primary-darker: ${darken(0.3, primary)};
   --primary-contrast: white;  
-  --accent: orange;
+  --accent: #e27a12;
   --accent-contrast: white;
-  --neutral: gray;
-  --neutral-contrast: black;
-  --success: green;
-  --success-contrast: black;
-  --danger: red;
-  --danger-contrast: black;
+  --neutral: var(--bg-body);
+  --neutral-contrast: var(--bg-secondary-alt);
+  --success: #388e3c;
+  --success-contrast: white;
+  --danger: #d32f2f;
+  --danger-contrast: white;
 `;
