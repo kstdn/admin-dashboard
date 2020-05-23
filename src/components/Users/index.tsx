@@ -8,7 +8,7 @@ const Users = () => {
   const users = useSelector(fromUsers.selectors.selectAll);
 
   useEffect(() => {
-    dispatch(fromUsers.slice.actions.loadUsers());
+    dispatch(fromUsers.slice.actions.load());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

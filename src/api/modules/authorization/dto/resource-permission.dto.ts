@@ -1,8 +1,3 @@
-export type ResourceDto = {
-  id: string;
-  name: string;
-}
-
 export type ResourceActionsDto = {
   createOwn: boolean;
   readOwn: boolean;

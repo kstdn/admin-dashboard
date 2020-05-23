@@ -8,28 +8,28 @@ import { UserDto } from 'api/modules/users/dto/user.dto';
 import { RootState } from 'store';
 import { Status } from 'util/status';
 
-type UsersState = {
+type State = {
   status: Status;
   error: string | undefined;
 };
 
-const usersAdapter = createEntityAdapter<UserDto>();
+const adapter = createEntityAdapter<UserDto>();
 
 export const slice = createSlice({
   name: 'users',
-  initialState: usersAdapter.getInitialState<UsersState>({
+  initialState: adapter.getInitialState<State>({
     status: Status.Idle,
     error: undefined,
   }),
   reducers: {
-    loadUsers(state) {
+    load(state) {
       state.status = Status.Loading;
     },
-    loadUsersSuccess(state, action: PayloadAction<UserDto[]>) {
+    loadSuccess(state, action: PayloadAction<UserDto[]>) {
       state.status = Status.Resolved;
-      usersAdapter.setAll(state, action.payload);
+      adapter.setAll(state, action.payload);
     },
-    loadUsersFailure(state, action: PayloadAction<string>) {
+    loadFailure(state, action: PayloadAction<string>) {
       state.status = Status.Rejected;
       state.error = action.payload;
     },
@@ -37,10 +37,10 @@ export const slice = createSlice({
 });
 
 // Selectors
-const selectUsersState = (state: RootState) => state.users;
-const entitySelectors = usersAdapter.getSelectors<RootState>(state => state.users);
-const selectStatus = createSelector(selectUsersState, state => state.status);
-const selectError = createSelector(selectUsersState, state => state.error);
+const selectState = (state: RootState) => state.users;
+const entitySelectors = adapter.getSelectors<RootState>(state => state.users);
+const selectStatus = createSelector(selectState, state => state.status);
+const selectError = createSelector(selectState, state => state.error);
 
 export const selectors = {
   ...entitySelectors,

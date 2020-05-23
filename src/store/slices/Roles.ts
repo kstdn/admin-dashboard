@@ -22,14 +22,14 @@ export const slice = createSlice({
     error: undefined,
   }),
   reducers: {
-    loadRoles(state) {
+    load(state) {
       state.status = Status.Loading;
     },
-    loadRolesSuccess(state, action: PayloadAction<RoleDto[]>) {
+    loadSuccess(state, action: PayloadAction<RoleDto[]>) {
       state.status = Status.Resolved;
       adapter.setAll(state, action.payload);
     },
-    loadRolesFailure(state, action: PayloadAction<string>) {
+    loadFailure(state, action: PayloadAction<string>) {
       state.status = Status.Rejected;
       state.error = action.payload;
     },
@@ -37,10 +37,10 @@ export const slice = createSlice({
 });
 
 // Selectors
-const selectRolesState = (state: RootState) => state.roles;
+const selectState = (state: RootState) => state.roles;
 const entitySelectors = adapter.getSelectors<RootState>(state => state.roles);
-const selectStatus = createSelector(selectRolesState, state => state.status);
-const selectError = createSelector(selectRolesState, state => state.error);
+const selectStatus = createSelector(selectState, state => state.status);
+const selectError = createSelector(selectState, state => state.error);
 
 export const selectors = {
   ...entitySelectors,

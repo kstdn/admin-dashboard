@@ -2,18 +2,18 @@ import { getRoles } from 'api';
 import { GENERIC_ERROR } from 'messages';
 import { all, fork, put, takeLeading } from 'redux-saga/effects';
 import * as fromRoles from 'store/slices/Roles';
-const { actions: { loadRoles, loadRolesSuccess, loadRolesFailure } } = fromRoles.slice;
+const { actions: { load, loadSuccess, loadFailure } } = fromRoles.slice;
 
 function* watchLoadRoles() {
-  yield takeLeading(loadRoles.type, loadRolesWorker);
+  yield takeLeading(load.type, loadRolesWorker);
 }
 
 function* loadRolesWorker() {
   try {
     const roles = yield getRoles();
-    yield put(loadRolesSuccess(roles));
+    yield put(loadSuccess(roles));
   } catch {
-    yield put(loadRolesFailure(GENERIC_ERROR));
+    yield put(loadFailure(GENERIC_ERROR));
   }
 }
 

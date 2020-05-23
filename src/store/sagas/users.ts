@@ -1,24 +1,24 @@
-import { all, fork, takeLeading, put } from 'redux-saga/effects';
-import * as fromUsers from 'store/slices/Users';
 import { getUsers } from 'api';
 import { GENERIC_ERROR } from 'messages';
-const { actions: { loadUsers, loadUsersSuccess, loadUsersFailure } } = fromUsers.slice;
+import { all, fork, put, takeLeading } from 'redux-saga/effects';
+import * as fromUsers from 'store/slices/Users';
+const {
+  actions: { load, loadSuccess, loadFailure },
+} = fromUsers.slice;
 
-function* watchLoadUsers() {
-  yield takeLeading(loadUsers.type, loadUsersWorker);
+function* watchLoad() {
+  yield takeLeading(load.type, loadWorker);
 }
 
-function* loadUsersWorker() {
+function* loadWorker() {
   try {
     const users = yield getUsers();
-    yield put(loadUsersSuccess(users));
+    yield put(loadSuccess(users));
   } catch {
-    yield put(loadUsersFailure(GENERIC_ERROR));
+    yield put(loadFailure(GENERIC_ERROR));
   }
 }
 
 export function* usersSaga() {
-  yield all([
-    fork(watchLoadUsers),
-  ]);
+  yield all([fork(watchLoad)]);
 }
