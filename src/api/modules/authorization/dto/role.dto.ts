@@ -1,4 +1,4 @@
-export type Role = {
+export type RoleDto = {
   id: string;
   name: string;
 }

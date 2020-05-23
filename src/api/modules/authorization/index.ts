@@ -2,8 +2,8 @@ import { httpClient } from 'util/http-client';
 import { Paginated } from '../shared/dto/Paginated';
 import { ApiRoute } from './../../api-route';
 import { ResourcePermissionDto, ResourceActionsDto } from './dto/resource-permission.dto';
-import { Resource } from './dto/resource.dto';
-import { Role } from './dto/role.dto';
+import { ResourceDto } from './dto/resource.dto';
+import { RoleDto } from './dto/role.dto';
 
 export const getPermissions = () => {
   return httpClient.get<
@@ -67,15 +67,15 @@ export const deletePermission = (id: string) => {
 };
 
 export const getRoles = () => {
-  return httpClient.get<Role[], Role[]>(ApiRoute.Roles);
+  return httpClient.get<RoleDto[], RoleDto[]>(ApiRoute.Roles);
 };
 
 export const getRole = (id: string) => {
-  return httpClient.get<Role, Role>(`${ApiRoute.Roles}/${id}`);
+  return httpClient.get<RoleDto, RoleDto>(`${ApiRoute.Roles}/${id}`);
 };
 
 export const createRole = (name: string) => {
-  return httpClient.post<Role, Role>(`${ApiRoute.Roles}`, {
+  return httpClient.post<RoleDto, RoleDto>(`${ApiRoute.Roles}`, {
     params: {
       name,
     },
@@ -83,15 +83,15 @@ export const createRole = (name: string) => {
 };
 
 export const assignRole = (roleId: string, userId: string) => {
-  return httpClient.post<Role, Role>(`${ApiRoute.Roles}/${roleId}/user/${userId}`);
+  return httpClient.post<RoleDto, RoleDto>(`${ApiRoute.Roles}/${roleId}/user/${userId}`);
 };
 
 export const unassignRole = (roleId: string, userId: string) => {
-  return httpClient.delete<Role, Role>(`${ApiRoute.Roles}/${roleId}/user/${userId}`);
+  return httpClient.delete<RoleDto, RoleDto>(`${ApiRoute.Roles}/${roleId}/user/${userId}`);
 };
 
 export const updateRole = (id: string, name: string) => {
-  return httpClient.patch<Role, Role>(`${ApiRoute.Roles}/${id}`, {
+  return httpClient.patch<RoleDto, RoleDto>(`${ApiRoute.Roles}/${id}`, {
     params: {
       name,
     },
@@ -103,5 +103,5 @@ export const deleteRole = (id: string) => {
 };
 
 export const getResources = () => {
-  return httpClient.get<Resource[], Resource[]>(ApiRoute.Resources);
+  return httpClient.get<ResourceDto[], ResourceDto[]>(ApiRoute.Resources);
 };

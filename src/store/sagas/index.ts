@@ -4,6 +4,8 @@ import { userDetailsSaga } from 'store/sagas/user-details';
 import { usersSaga } from 'store/sagas/users';
 import { authSaga } from './auth';
 import { watchAppInit } from './init';
+import { resourcesSaga } from './resources';
+import { rolesSaga } from './roles';
 import { watchInitLocationChange } from './router';
 
 export default function* rootSaga() {
@@ -13,6 +15,8 @@ export default function* rootSaga() {
     fork(authSaga),
     fork(userDetailsSaga),
     fork(usersSaga),
+    fork(rolesSaga),
+    fork(resourcesSaga),
     fork(permissionsSaga),
   ]);
 }
