@@ -3,12 +3,13 @@ import { GENERIC_ERROR } from 'messages';
 import { all, fork, put, select } from 'redux-saga/effects';
 import * as fromUsers from 'store/slices/Users';
 import { takeAndValidateCache } from './common';
+import { invalidateCacheAfter } from 'constant-values';
 const {
   actions: { load, loadSuccess, loadFailure },
 } = fromUsers.slice;
 
 function* watchLoad() {
-  yield takeAndValidateCache(load.type, 10000, loadWorker);
+  yield takeAndValidateCache(load.type, invalidateCacheAfter, loadWorker);
 }
 
 function* loadWorker(cacheIsInvalid: boolean) {

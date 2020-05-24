@@ -1,16 +1,22 @@
 import { getRoles } from 'api';
+import { invalidateCacheAfter } from 'constant-values';
 import { GENERIC_ERROR } from 'messages';
-import { all, fork, put, takeLeading } from 'redux-saga/effects';
+import { all, fork, put, select } from 'redux-saga/effects';
 import * as fromRoles from 'store/slices/Roles';
-const { actions: { load, loadSuccess, loadFailure } } = fromRoles.slice;
+import { takeAndValidateCache } from './common';
+const {
+  actions: { load, loadSuccess, loadFailure },
+} = fromRoles.slice;
 
-function* watchLoadRoles() {
-  yield takeLeading(load.type, loadRolesWorker);
+function* watchLoad() {
+  yield takeAndValidateCache(load.type, invalidateCacheAfter, loadWorker);
 }
 
-function* loadRolesWorker() {
+function* loadWorker(cacheIsInvalid: boolean) {
   try {
-    const roles = yield getRoles();
+    const roles = cacheIsInvalid
+      ? yield getRoles()
+      : yield select(fromRoles.selectors.selectAll);
     yield put(loadSuccess(roles));
   } catch {
     yield put(loadFailure(GENERIC_ERROR));
@@ -18,7 +24,5 @@ function* loadRolesWorker() {
 }
 
 export function* rolesSaga() {
-  yield all([
-    fork(watchLoadRoles),
-  ]);
+  yield all([fork(watchLoad)]);
 }
