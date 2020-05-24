@@ -1,5 +1,8 @@
 export const baseUrl = "http://localhost:4000";
 
+// Redux Saga Constants
+export const invalidateCacheAfter = 300000;
+
 // HTTP Request Status Codes
 export const unauthorizedErrorCode = 401;
 export const createdStatusCode = 201;
