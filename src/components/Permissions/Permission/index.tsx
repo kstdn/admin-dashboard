@@ -1,21 +1,15 @@
 import { deletePermission, updatePermission } from 'api';
-import {
-  ResourceActionsDto,
-  ResourcePermissionDto,
-} from 'api/modules/authorization/dto/resource-permission.dto';
+import { ResourceActionsDto, ResourcePermissionDto } from 'api/modules/authorization/dto/resource-permission.dto';
 import CrudTable from 'components/Permissions/CrudTable';
 import { DELETE_ERROR, UPDATE_ERROR } from 'messages';
 import React, { useEffect, useState } from 'react';
+import ActionButton from 'shared/components/ActionButton';
 import Box from 'shared/components/Box';
 import { Button } from 'shared/components/Button';
 import Card from 'shared/components/Card';
 import ConfirmStrip from 'shared/components/ConfirmStrip';
 import { Status } from 'util/status';
-import {
-  checkIfHasChanges,
-  extractActionsFromPermission,
-  mergeChanges,
-} from '../util';
+import { checkIfHasChanges, extractActionsFromPermission, mergeChanges } from '../util';
 import * as Styled from './styled';
 
 type Props = {
@@ -139,9 +133,12 @@ const Permission = ({ permission, onUpdate, onDelete }: Props) => {
           <>
             <ConfirmStrip
               trigger={
-                <Button color='danger'>
-                  {deleteStatus === Status.Loading ? 'Loading...' : 'Delete'}
-                </Button>
+                <ActionButton
+                  color='danger'
+                  isLoading={deleteStatus === Status.Loading}
+                >
+                  Delete
+                </ActionButton>
               }
               onConfirm={handleDelete}
             >
@@ -150,15 +147,14 @@ const Permission = ({ permission, onUpdate, onDelete }: Props) => {
                   Reset
                 </Button>
               )}
-              <Button
+              <ActionButton
                 color='success'
                 disabled={!hasChanges}
                 onClick={handleUpdate}
+                isLoading={updateStatus === Status.Loading}
               >
-                {updateStatus === Status.Loading
-                  ? 'Loading...'
-                  : 'Save changes'}
-              </Button>
+                Save changes
+              </ActionButton>
             </ConfirmStrip>
           </>
         }
