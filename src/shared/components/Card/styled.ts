@@ -1,23 +1,24 @@
 import styled from 'styled-components/macro';
-import Box from '../Box';
+import { box } from 'styles/mixins/box/box.mixin';
 
-export const Card = styled(Box)`
-  padding: 0;
+export const Card = styled.div`
+  ${box(false, false)}
+  box-shadow: var(--shadow);
   overflow: hidden;
-  background-color: var(--bg-secondary);
+  background-color: var(--background-color-elevation-2);
   color: var(--text-color);
 `;
 
 export const CardHeader = styled.div`
-  padding: var(--base-padding);
+  padding: var(--space-2);
 `;
 
 export const CardContent = styled.div`
-  padding: var(--base-padding);
+  padding: var(--space-2);
   overflow: auto;
 `;
 
 export const CardFooter = styled.div`
-  padding: var(--base-padding);
-  background-color: var(--bg-secondary-alt);
+  padding: var(--space-2);
+  background-color: var(--background-color-elevation-3);
 `;

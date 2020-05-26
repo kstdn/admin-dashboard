@@ -1,16 +1,17 @@
-import { ButtonHTMLAttributes } from 'react';
-import Box from 'shared/components/Box';
-import { BoxProps } from '../Box/BoxProps';
+import { ButtonHTMLAttributes, ComponentProps } from 'react';
 import styled from 'styled-components/macro';
+import { Tile } from '../Tile';
 
-export const Button = styled(Box).attrs(_ => ({
+type Props = ButtonHTMLAttributes<ComponentProps<typeof Tile>>;
+
+export const Button = styled(Tile).attrs(_ => ({
   as: 'button',
-}))<ButtonHTMLAttributes<BoxProps>>`
-  border: 0;
+  renderBorder: true
+}))<Props>`
   text-transform: uppercase;
-
+  
   &[disabled] {
-    background-color: var(--neutral);
-    color: var(--neutral-contrast);
+    pointer-events: none;
+    opacity: 0.5;
   }
 `;

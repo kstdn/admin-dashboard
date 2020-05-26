@@ -1,7 +1,7 @@
-import Box from 'shared/components/Box';
+import { Tile } from 'shared/components/Tile';
 import styled from 'styled-components';
 
-export const Tile = styled(Box)`
+export const DashboardTile = styled(Tile)`
   height: 100px;
   position: relative;
   overflow: hidden;
@@ -13,8 +13,8 @@ export const TitleRow = styled.div`
 `;
 
 export const Title = styled.span`
-  font-size: larger;
-  font-weight: 500;
+  font-size: var(--font-size-3);
+  font-weight: var(--font-weight-accent);
 `;
 
 export const Icon = styled.div`

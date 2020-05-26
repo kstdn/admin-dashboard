@@ -1,12 +1,12 @@
-import React from 'react';
-import { BoxProps } from 'shared/components/Box/BoxProps';
+import React, { ComponentProps } from 'react';
 import * as Styled from './styled';
+import { Tile } from '../Tile';
 
 type Props = {
   header?: JSX.Element;
   content: JSX.Element;
   footer?: JSX.Element;
-} & BoxProps;
+} & ComponentProps<typeof Tile>;
 
 const Card = ({ header, content, footer, ...boxProps }: Props) => {
   return (

@@ -7,22 +7,35 @@ export const GlobalStyle = createGlobalStyle`
   ${normalize()}
 
   :root {
-    --base-font-size: 16px;
 
-    --base-padding: 8px;
-    --base-padding-big: 16px;
-    --base-border-radius: 4px;
+    --font-size-minus-2: 12px;
+    --font-size-minus-1: 14px;
+    --font-size: 16px;
+    --font-size-2: 18px;
+    --font-size-3: 20px;
+    font-size:  var(--font-size);
 
-    --base-animation-duration: 0.3s;
-    --base-animation-timing: ease-out;
+    --base-space: 0.5rem;
+    --space: var(--base-space);
+    --space-2: calc(2 * var(--base-space));
+    --space-3: calc(3 * var(--base-space));
+    --space-4: calc(4 * var(--base-space));
+    --space-5: calc(5 * var(--base-space));
 
-    --base-icon-width: 24px;
+    --border-radius: 0.25rem;
+    --border-radius-circle: 50%;
+
+    --font-weight-light: 300;
+    --font-weight-regular: 400;
+    --font-weight-accent: 500;
+    --font-weight-bold: 700;
+
+    --animation-duration: 0.3s;
+    --animation-timing: ease-out;
+
+    --icon-width: 24px;
 
     ${props => (props.theme === 'light' ? lightThemeVars : darkThemeVars)};
-  }
-
-  html {
-    font-size: var(--base-font-size);
   }
 
   html, body, #root {
@@ -31,7 +44,7 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    background-color: var(--bg-body);
+    background-color: var(--background-color);
     margin: 0;
     font-family: 'Montserrat', sans-serif;
     -webkit-font-smoothing: antialiased;

@@ -5,7 +5,7 @@ import { getPathname } from 'store/selectors';
 import styled from 'styled-components/macro';
 
 const StyledBreadcrumbs = styled.div`
-  font-size: smaller;
+  font-size: var(--font-size-minus-2);
 `;
 
 const StyledLink = styled(Link)`
@@ -14,7 +14,7 @@ const StyledLink = styled(Link)`
 
   &:not(:last-of-type):after {
     content: "/";
-    margin-inline-start: var(--base-padding);
+    margin-inline-start: var(--space);
     margin-inline-end: 8px;
   }
 `;

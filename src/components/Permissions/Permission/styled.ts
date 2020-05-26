@@ -5,7 +5,7 @@ export const Wrapper = styled.div`
 `;
 
 export const Container = styled.div`
-  padding: var(--base-padding);
+  padding: var(--space-2);
 `;
 
 export const Overlay = styled.div`
@@ -19,21 +19,21 @@ export const Overlay = styled.div`
 
 export const Header = styled.div`
   display: grid;
-  gap: var(--base-padding);
+  gap: var(--space);
   height: 100%;
-  font-size: 1.1rem;
-  font-weight: 600;
+  font-size: var(--font-size-2);
+  font-weight: var(--font-weight-accent);
 `;
 
 export const Subheader = styled.div`
-  font-size: 0.9rem;
-  font-weight: normal;
+  font-size: var(--font-size-minus-1);
+  font-weight: var(--font-weight-regular);
 `;
 
 export const ResourceName = styled.span`
-  font-weight: bold;
+  font-weight: var(--font-weight-bold);
 `;
 
 export const Assignee = styled.span`
-  font-weight: bold;
+  font-weight: var(--font-weight-bold);
 `;

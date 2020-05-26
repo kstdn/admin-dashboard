@@ -10,6 +10,6 @@ export const Flex = styled.div<Props>`
     props.gap &&
     `
     & > *:not(:last-of-type) {
-    margin-right: var(--base-padding);
+    margin-inline-end: var(--space);
   }`}
 `;

@@ -3,26 +3,26 @@ import styled from 'styled-components/macro';
 
 export const Form = styled.form`
   display: grid;
-  gap: var(--base-padding);
-  padding: var(--base-padding-big);
-  background-color: var(--primary);
-  border-radius: var(--base-border-radius);
+  gap: var(--space);
+  padding: var(--space-2);
+  background-color: var(--background-color-elevation-2);
+  border-radius: var(--border-radius);
 `;
 
 export const FormLabel = styled.span`
-  font-size: 1.5rem;
-  margin-block-end: 1.5rem;
+  font-size: var(--font-size-3);
+  margin-block-end: var(--space-2);
 `;
 
 export const Label = styled.label``;
 
 export const Input = styled.input`
   display: block;
-  border-radius: var(--base-border-radius);
+  border-radius: var(--border-radius);
   background-color: transparent;
-  border: 1px solid var(--bg-body);
+  border: 1px solid var(--background-color);
   color: var(--text-color);
-  padding: var(--base-padding);
+  padding: var(--space-2);
 `;
 
 export const SubmitButton = styled(Button)`

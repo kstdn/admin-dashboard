@@ -6,11 +6,11 @@ const StyledSidebarLink = styled.div<any>`
   display: flex;
   align-items: center;
   cursor: pointer;
-  margin-top: var(--base-padding);
+  margin-block-start: var(--space);
 `;
 
 const IconWrapper = styled.span`
-  padding-right: var(--base-padding);
+  padding-inline-end: var(--space);
   line-height: 0;
 `;
 

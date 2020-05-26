@@ -5,12 +5,12 @@ const StyledMain = styled.main`
   display: flex;
   flex-direction: column;
   flex: 1;
-  background: var(--bg-body);
+  background: var(--background-color);
   color: var(--text-color);
-  padding: var(--base-padding);
+  padding: var(--space-2);
 
   & > *:not(:last-of-type) {
-    margin-block-end: var(--base-padding);
+    margin-block-end: var(--space);
   }
 `;
 

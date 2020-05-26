@@ -1,15 +1,22 @@
 import { deletePermission, updatePermission } from 'api';
-import { ResourceActionsDto, ResourcePermissionDto } from 'api/modules/authorization/dto/resource-permission.dto';
+import {
+  ResourceActionsDto,
+  ResourcePermissionDto,
+} from 'api/modules/authorization/dto/resource-permission.dto';
 import CrudTable from 'components/Permissions/CrudTable';
 import { DELETE_ERROR, UPDATE_ERROR } from 'messages';
 import React, { useEffect, useState } from 'react';
 import ActionButton from 'shared/components/ActionButton';
-import Box from 'shared/components/Box';
 import { Button } from 'shared/components/Button';
 import Card from 'shared/components/Card';
 import ConfirmStrip from 'shared/components/ConfirmStrip';
+import { Tile } from 'shared/components/Tile';
 import { Status } from 'util/status';
-import { checkIfHasChanges, extractActionsFromPermission, mergeChanges } from '../util';
+import {
+  checkIfHasChanges,
+  extractActionsFromPermission,
+  mergeChanges,
+} from '../util';
 import * as Styled from './styled';
 
 type Props = {
@@ -125,7 +132,7 @@ const Permission = ({ permission, onUpdate, onDelete }: Props) => {
                   handlePermissionValueChange(permissionChange)
                 }
               ></CrudTable>
-              {error && <Box color='danger'>{error}</Box>}
+              {error && <Tile color='danger'>{error}</Tile>}
             </Styled.Container>
           </>
         }

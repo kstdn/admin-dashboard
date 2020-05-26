@@ -18,13 +18,13 @@ const BaseTile = ({ linkTo, icon, title, children }: Props) => {
       condition={!!linkTo}
       wrapper={children => <Link to={linkTo as string}>{children}</Link>}
     >
-      <Styled.Tile fillContainer={true}>
+      <Styled.DashboardTile fillContainer={true}>
         <Styled.TitleRow>
           <Styled.Title>{title}</Styled.Title>
           <Styled.Icon>{iconBig}</Styled.Icon>
         </Styled.TitleRow>
         {children}
-      </Styled.Tile>
+      </Styled.DashboardTile>
     </ConditionalWrapper>
   );
 };

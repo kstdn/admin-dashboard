@@ -1,15 +1,13 @@
-import Box from 'shared/components/Box';
+import { Tile } from 'shared/components/Tile';
 import styled from 'styled-components';
 
-export const UserDetailsContainer = styled(Box)`
+export const UserDetailsContainer = styled(Tile)`
   height: 100px;
 `;
 
 export const Username = styled.div`
-  font-size: larger;
-  font-weight: 500;
+  font-size: var(--font-size-3);
+  font-weight: var(--font-weight-accent);
 `;
 
-export const Email = styled.div`
-  
-`;
+export const Email = styled.div``;
