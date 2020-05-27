@@ -14,6 +14,8 @@ import { normalize, Normalized } from 'util/normalize';
 import { Status } from 'util/status';
 import Permission from './Permission';
 import * as Styled from './styled';
+import Paginator from 'shared/components/Paginator';
+import { Stack } from 'shared/components/Stack';
 
 type State = {
   permissions: Normalized<ResourcePermissionDto>;
@@ -23,6 +25,8 @@ type State = {
 };
 
 const Permissions = () => {
+  const [page, setPage] = useState(1);
+
   const [state, setState] = useState<State>({
     permissions: {},
     paginationData: undefined,
@@ -31,8 +35,6 @@ const Permissions = () => {
   });
 
   const { permissions, paginationData, status, error } = state;
-
-  console.log('RERENDER PERMISSIONS');
 
   useEffect(() => {
     const load = async () => {
@@ -45,7 +47,7 @@ const Permissions = () => {
       });
 
       try {
-        const { items, ...paginationData } = await getPermissions();
+        const { items, ...paginationData } = await getPermissions(page, 5);
 
         if (items) {
           setState({
@@ -66,7 +68,7 @@ const Permissions = () => {
 
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [page]);
 
   const handleUpdate = async (id: string, changed: ResourceActionsDto) => {
     setState({
@@ -85,7 +87,7 @@ const Permissions = () => {
     delete permissions[id];
     setState({
       ...state,
-      permissions
+      permissions,
     });
   };
 
@@ -97,14 +99,28 @@ const Permissions = () => {
       <Link to={Route.Dashboard.PermissionsNew}>
         <Button>Create new</Button>
       </Link>
-      {Object.entries(permissions).map(([key, p]) => (
-        <Permission
-          permission={p}
-          key={key}
-          onUpdate={handleUpdate}
-          onDelete={handleDelete}
-        ></Permission>
-      ))}
+
+      <Styled.Scrollable>
+        <Stack gap={true}>
+          {Object.entries(permissions).map(([key, p]) => (
+            <Permission
+              permission={p}
+              key={key}
+              onUpdate={handleUpdate}
+              onDelete={handleDelete}
+            ></Permission>
+          ))}
+        </Stack>
+      </Styled.Scrollable>
+
+      {paginationData && (
+        <Paginator
+          currentPage={paginationData.currentPage}
+          totalPages={paginationData.totalPages}
+          maxDisplayedPages={5}
+          onGoToPage={page => setPage(page)}
+        ></Paginator>
+      )}
     </Styled.Container>
   );
 };

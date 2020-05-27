@@ -72,7 +72,7 @@ const CreatePermission = () => {
     <>
       <Card
         content={
-          <Stack gap={true} gapSize={3}>
+          <Stack gap={true} gapSize={3} alignItems='flex-start'>
             <Stack gap={true}>
               <Styled.Label>Resource</Styled.Label>
               <SelectResource

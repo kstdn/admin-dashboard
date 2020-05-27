@@ -5,11 +5,16 @@ import { ResourcePermissionDto, ResourceActionsDto } from './dto/resource-permis
 import { ResourceDto } from './dto/resource.dto';
 import { RoleDto } from './dto/role.dto';
 
-export const getPermissions = () => {
+export const getPermissions = (page: number, limit: number) => {
   return httpClient.get<
     Paginated<ResourcePermissionDto>,
     Paginated<ResourcePermissionDto>
-  >(ApiRoute.Permissions);
+  >(ApiRoute.Permissions, {
+    params: {
+      page,
+      limit
+    }
+  });
 };
 
 export const getPermission = (id: string) => {
