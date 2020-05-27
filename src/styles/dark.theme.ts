@@ -14,11 +14,11 @@ const danger = '#d32f2f';
 const dangerContrast = '#f9e2e2';
 
 export const darkThemeVars = `
-  --background-color: #2a3a48;
+  --background-color: #1c2730;
   --brand-color: ${brand};
   --brand-color-contrast: ${brandContrast};
-  --background-color-elevation-2: #172836;
-  --background-color-elevation-3: #1b242c;
+  --background-color-elevation-2: #1f3547;
+  --background-color-elevation-3: #2f3d4c;
   --text-color: #e0e0e0;
   --shadow: black 0px 2px 10px -7px;
   

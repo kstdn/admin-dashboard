@@ -20,5 +20,4 @@ export const CardContent = styled.div`
 
 export const CardFooter = styled.div`
   padding: var(--space-2);
-  background-color: var(--background-color-elevation-3);
 `;

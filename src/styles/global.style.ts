@@ -17,6 +17,7 @@ export const GlobalStyle = createGlobalStyle`
 
     --base-space: 0.5rem;
     --space: var(--base-space);
+    --space-1: var(--space);
     --space-2: calc(2 * var(--base-space));
     --space-3: calc(3 * var(--base-space));
     --space-4: calc(4 * var(--base-space));
@@ -29,6 +30,7 @@ export const GlobalStyle = createGlobalStyle`
     --font-weight-regular: 400;
     --font-weight-accent: 500;
     --font-weight-bold: 700;
+    --letter-spacing: 0.08rem;
 
     --animation-duration: 0.3s;
     --animation-timing: ease-out;
