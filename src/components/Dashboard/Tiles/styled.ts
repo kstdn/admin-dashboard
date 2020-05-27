@@ -1,5 +1,5 @@
 import { Tile } from 'shared/components/Tile';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 
 export const DashboardTile = styled(Tile)`
   height: 100px;
