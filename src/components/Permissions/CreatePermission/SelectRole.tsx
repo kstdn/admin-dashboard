@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
+import { Loader } from 'react-feather';
 import { useDispatch, useSelector } from 'react-redux';
-import Loader from 'shared/components/Loader';
 import { selectors, slice } from 'store/slices/Roles';
 import { Status } from 'util/status';
 
@@ -23,6 +23,7 @@ const SelectRole = ({ value, onChange }: Props) => {
     onChange(id);
   };
 
+  if (status === Status.Idle) return null;
   if (status === Status.Loading) return <Loader />;
 
   return (

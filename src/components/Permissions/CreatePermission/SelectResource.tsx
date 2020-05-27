@@ -1,7 +1,7 @@
 import { ResourceDto } from 'api/modules/authorization/dto/resource.dto';
 import React, { useEffect } from 'react';
+import { Loader } from 'react-feather';
 import { useDispatch, useSelector } from 'react-redux';
-import Loader from 'shared/components/Loader';
 import { selectors, slice } from 'store/slices/Resources';
 import { Status } from 'util/status';
 
@@ -24,6 +24,7 @@ const SelectResource = ({ value, onChange }: Props) => {
     onChange(resources.find(r => r.id === id) as ResourceDto);
   };
 
+  if (status === Status.Idle) return null;
   if (status === Status.Loading) return <Loader />;
 
   return (

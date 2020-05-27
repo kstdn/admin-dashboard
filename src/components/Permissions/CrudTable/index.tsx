@@ -8,9 +8,9 @@ type Props = {
   onChange: (permissionChange: Partial<ResourceActionsDto>) => void;
 };
 
-const CrudTable = ({ actions, onChange }: Props) => {
+const CrudTable = ({ actions, onChange, ...rest }: Props) => {
   return (
-    <Styled.Table>
+    <Styled.Table {...rest}>
       <div></div>
       <div>Create</div>
       <div>Read</div>

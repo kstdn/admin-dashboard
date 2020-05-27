@@ -1,36 +1,37 @@
+import { grantPermissionToRole, grantPermissionToUser } from 'api';
 import { ResourceActionsDto } from 'api/modules/authorization/dto/resource-permission.dto';
 import { ResourceDto } from 'api/modules/authorization/dto/resource.dto';
+import { push } from 'connected-react-router';
 import React, { useState } from 'react';
-import { Button } from 'shared/components/Button';
+import { useDispatch } from 'react-redux';
+import ActionButton from 'shared/components/ActionButton';
 import Card from 'shared/components/Card';
 import { Divider } from 'shared/components/Divider';
 import { Flex } from 'shared/components/Flex/styled';
+import { Stack } from 'shared/components/Stack';
+import { Route } from 'shared/UrlRoute';
 import { Status } from 'util/status';
-import CrudTable from '../CrudTable';
 import { createEmptyActionsSet, mergeChanges } from '../util';
 import SelectResource from './SelectResource';
 import SelectRole from './SelectRole';
 import SelectUser from './SelectUser';
-import { grantPermissionToUser, grantPermissionToRole } from 'api';
-import { useDispatch } from 'react-redux';
-import { push } from 'connected-react-router';
-import { Route } from 'shared/UrlRoute';
+import * as Styled from './styled';
 
-type AssigneeType = 'user' | 'role';
-const assigneeOptions: AssigneeType[] = ['user', 'role'];
+type AssigneeType = 'User' | 'Role';
+const assigneeOptions: AssigneeType[] = ['User', 'Role'];
 
 const CreatePermission = () => {
   const dispatch = useDispatch();
 
   const [status, setStatus] = useState(Status.Idle);
   const [resource, setResource] = useState<ResourceDto>();
-  const [assigneeType, setAssigneeType] = useState<AssigneeType>('user');
+  const [assigneeType, setAssigneeType] = useState<AssigneeType>('User');
   const [userId, setUserId] = useState<string>();
   const [roleId, setRoleId] = useState<string>();
   const [actions, setActions] = useState(createEmptyActionsSet());
 
-  const assigneeTypeIsUser = assigneeType === 'user';
-  const assigneeTypeIsRole = assigneeType === 'role';
+  const assigneeTypeIsUser = assigneeType === 'User';
+  const assigneeTypeIsRole = assigneeType === 'Role';
 
   const handleAssigneeTypeChange = (assigneeType: AssigneeType) => {
     setAssigneeType(assigneeType);
@@ -64,7 +65,6 @@ const CreatePermission = () => {
       }
 
       dispatch(push(Route.Dashboard.Permissions));
-
     } catch {}
   };
 
@@ -72,15 +72,18 @@ const CreatePermission = () => {
     <>
       <Card
         content={
-          <div>
-            <SelectResource
-              value={resource && resource.id}
-              onChange={handleResourceChange}
-            />
-            <div>
+          <Stack gap={true} gapSize={3}>
+            <Stack gap={true}>
+              <Styled.Label>Resource</Styled.Label>
+              <SelectResource
+                value={resource && resource.id}
+                onChange={handleResourceChange}
+              />
+            </Stack>
+            <Stack gap={true}>
+              <Styled.Label>Assignee type</Styled.Label>
               <select
-                name='role'
-                id=''
+                name='type'
                 onChange={e =>
                   handleAssigneeTypeChange(e.target.value as AssigneeType)
                 }
@@ -91,24 +94,31 @@ const CreatePermission = () => {
                   </option>
                 ))}
               </select>
-            </div>
-            Select
-            {assigneeTypeIsUser && (
-              <SelectUser value={userId} onChange={handleUserChange} />
-            )}
-            {assigneeTypeIsRole && (
-              <SelectRole value={roleId} onChange={handleRoleChange} />
-            )}
-            <CrudTable
+            </Stack>
+            <Stack gap={true}>
+              <Styled.Label>Assignee</Styled.Label>
+              {assigneeTypeIsUser && (
+                <SelectUser value={userId} onChange={handleUserChange} />
+              )}
+              {assigneeTypeIsRole && (
+                <SelectRole value={roleId} onChange={handleRoleChange} />
+              )}
+            </Stack>
+            <Styled.CrudTable
               actions={actions}
               onChange={actionsChange => handleActionValueChange(actionsChange)}
             />
-          </div>
+          </Stack>
         }
         footer={
           <Flex gap={true}>
             <Divider />
-            <Button onClick={handleCreate}>Save</Button>
+            <ActionButton
+              onClick={handleCreate}
+              isLoading={status === Status.Loading}
+            >
+              Save
+            </ActionButton>
           </Flex>
         }
       />
