@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import ActionButton from 'shared/components/ActionButton';
 import Card from 'shared/components/Card';
 import { Divider } from 'shared/components/Divider';
-import { Flex } from 'shared/components/Flex/styled';
+import { Flex } from 'shared/components/Flex';
 import { Stack } from 'shared/components/Stack';
 import { Route } from 'shared/UrlRoute';
 import { Status } from 'util/status';

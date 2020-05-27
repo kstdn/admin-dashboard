@@ -1,5 +1,5 @@
 import styled from 'styled-components/macro';
-import { Flex } from './Flex/styled';
+import { Flex } from './Flex';
 
 export const Stack = styled(Flex).attrs({
   direction: 'column'

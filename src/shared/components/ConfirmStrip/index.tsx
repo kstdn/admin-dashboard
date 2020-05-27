@@ -2,7 +2,7 @@ import React, { cloneElement, ReactNode, useState } from 'react';
 import styled from 'styled-components/macro';
 import { Button } from '../Button';
 import { Divider } from '../Divider';
-import { Flex } from '../Flex/styled';
+import { Flex } from '../Flex';
 
 const Container = styled.div`
   height: 100%;
