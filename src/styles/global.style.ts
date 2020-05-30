@@ -37,6 +37,8 @@ export const GlobalStyle = createGlobalStyle`
 
     --icon-width: 24px;
 
+    --content-width: 500px;
+
     ${props => (props.theme === 'light' ? lightThemeVars : darkThemeVars)};
   }
 

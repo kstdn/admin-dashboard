@@ -1,11 +1,9 @@
 import styled from 'styled-components/macro';
-import { Stack } from 'shared/components/Stack';
+import SandwichContainer from 'shared/components/Container/SandwichContainer';
 
-export const Container = styled(Stack).attrs({
-  gap: true,
-})`
+export const Container = styled(SandwichContainer)`
   align-items: stretch;
-  max-width: 500px;
+  max-width: var(--content-width);
   height: 100%;
   margin: auto;
 `;
