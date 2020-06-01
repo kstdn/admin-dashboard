@@ -1,10 +1,20 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import Loader from 'shared/components/Loader';
-import Table, { ColumnDef } from 'shared/components/Table';
-import * as fromUsers from 'store/slices/Users';
-import { Status } from 'util/status';
+import { getUsers } from 'api';
 import { UserDto } from 'api/modules/users/dto/user.dto';
+import { entityInitialLimit, entityInitialPage } from 'constant-values';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Button } from 'shared/components/Button';
+import SandwichContainer from 'shared/components/Container/SandwichContainer';
+import { Divider } from 'shared/components/Divider';
+import { Flex } from 'shared/components/Flex';
+import LimitSelector from 'shared/components/LimitSelector';
+import Loader from 'shared/components/Loader';
+import Paginator from 'shared/components/Paginator';
+import Table, { ColumnDef } from 'shared/components/Table';
+import { useEntityState } from 'shared/hooks/useEntityState';
+import { useLoadEntityPaginated } from 'shared/hooks/useLoadEntityPaginated';
+import { Route } from 'shared/UrlRoute';
+import { Status } from 'util/status';
 
 const columns: ColumnDef<UserDto>[] = [
   {
@@ -26,20 +36,40 @@ const columns: ColumnDef<UserDto>[] = [
 ];
 
 const Users = () => {
-  const dispatch = useDispatch();
-  const usersStatus = useSelector(fromUsers.selectors.selectStatus);
-  const users = useSelector(fromUsers.selectors.selectAll);
+  const [page, setPage] = useState(entityInitialPage);
+  const [limit, setLimit] = useState(entityInitialLimit);
 
-  useEffect(() => {
-    dispatch(fromUsers.slice.actions.load());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const [state, setState] = useEntityState<UserDto>();
+  const { items: users, paginationData, status, error } = state;
 
-  if (usersStatus === Status.Idle) return null;
-  if (usersStatus === Status.Loading) return <Loader />;
+  useLoadEntityPaginated(getUsers, setState, page, limit);
+
+  if (status === Status.Idle) return null;
+  if (status === Status.Loading) return <Loader />;
 
   return (
-    <Table data={users} columns={columns} keyProp={'id'}></Table>
+    <SandwichContainer
+      header={
+        <Flex gap={true}>
+          <Link to={Route.Dashboard.PermissionsNew}>
+            <Button>Create new</Button>
+          </Link>
+          <Divider />
+          <LimitSelector value={limit} onChange={setLimit}></LimitSelector>
+        </Flex>
+      }
+      content={<Table data={users} columns={columns} keyProp={'id'}></Table>}
+      footer={
+        paginationData && (
+          <Paginator
+            currentPage={paginationData.currentPage}
+            totalPages={paginationData.totalPages}
+            maxDisplayedPages={5}
+            onGoToPage={page => setPage(page)}
+          ></Paginator>
+        )
+      }
+    />
   );
 };
 
