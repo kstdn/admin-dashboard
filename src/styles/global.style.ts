@@ -23,6 +23,8 @@ export const GlobalStyle = createGlobalStyle`
     --space-4: calc(4 * var(--base-space));
     --space-5: calc(5 * var(--base-space));
 
+    --border-width: 1px;
+    --border-style: solid;
     --border-radius: 0.25rem;
     --border-radius-circle: 50%;
 
