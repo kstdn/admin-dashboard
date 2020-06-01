@@ -1,27 +1,58 @@
-import { NO_RESULTS } from 'messages';
+import { GENERIC_ERROR, NO_RESULTS } from 'messages';
 import React, { ChangeEvent } from 'react';
-import * as Styled from './styled';
 import { Loader } from 'react-feather';
+import * as Styled from './styled';
 
 type Props<T> = {
   loading: boolean;
+  error: string | undefined;
   options: T[];
-  displayProp: keyof T;
+  getDisplayValueFunc: (value: T) => string;
   onSearchTermChange: (value: string) => void;
   onSelect: (value: T) => void;
 };
 
+function popoverContent<T>(
+  options: T[],
+  loading: boolean,
+  error: string | undefined,
+  getDisplayValueFunc: (value: T) => string,
+) {
+  if (loading)
+    return (
+      <Styled.ComboboxLoading>
+        <Loader />
+      </Styled.ComboboxLoading>
+    );
+
+  if (error)
+    return <Styled.ComboboxEmpty>{GENERIC_ERROR}</Styled.ComboboxEmpty>;
+
+  if (!options || options.length === 0)
+    return <Styled.ComboboxEmpty>{NO_RESULTS}</Styled.ComboboxEmpty>;
+
+  return (
+    <Styled.ComboboxList>
+      {options.map(option => {
+        const displayValue = getDisplayValueFunc(option);
+        return (
+          <Styled.ComboboxOption key={displayValue} value={displayValue} />
+        );
+      })}
+    </Styled.ComboboxList>
+  );
+}
+
 function AutocompleteInput<T extends { id: string }>({
   loading,
+  error,
   options,
-  displayProp,
+  getDisplayValueFunc,
   onSearchTermChange,
   onSelect,
 }: Props<T>) {
   const handleSelect = (value: string) => {
-    onSelect(
-      options.find(o => ((o[displayProp] as unknown) as string) === value) as T,
-    );
+    onSelect(options.find(o => getDisplayValueFunc(o) === value) as T);
   };
 
   return (
@@ -32,27 +63,9 @@ function AutocompleteInput<T extends { id: string }>({
         }
         autocomplete={false}
       />
-      {options && (
-        <Styled.ComboboxPopover portal={false}>
-          {options.length > 0 ? (
-            <Styled.ComboboxList>
-              {options.map(option => {
-                const displayValue = `${option[displayProp]}`;
-                return (
-                  <Styled.ComboboxOption
-                    key={displayValue}
-                    value={displayValue}
-                  />
-                );
-              })}
-            </Styled.ComboboxList>
-          ) : (
-            <>
-              {loading && <Styled.ComboboxLoading><Loader /></Styled.ComboboxLoading>}
-              {!loading && <Styled.ComboboxEmpty>{NO_RESULTS}</Styled.ComboboxEmpty>}
-            </>
-          )}
-        </Styled.ComboboxPopover>
+      <Styled.ComboboxPopover portal={false}>
+        {popoverContent(options, loading, error, getDisplayValueFunc)}
+      </Styled.ComboboxPopover>
       )}
     </Styled.Combobox>
   );
