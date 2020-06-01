@@ -14,3 +14,4 @@ export const refreshTokenPartialKey = 'refresh_token_partial_1';
 // Entity Loading Defaults
 export const entityInitialPage = 1;
 export const entityInitialLimit = 5;
+export const entityAutocompleteDebounce = 1000;

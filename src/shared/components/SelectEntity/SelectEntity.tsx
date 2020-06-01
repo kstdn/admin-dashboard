@@ -1,4 +1,4 @@
-import { Selector } from '@reduxjs/toolkit';
+import { Selector, PayloadActionCreator } from '@reduxjs/toolkit';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import AutocompleteInput from 'shared/components/AutocompleteInput';
@@ -12,12 +12,18 @@ type Props<T> = {
     selectStatus: Selector<RootState, Status>;
     selectError: Selector<RootState, string | undefined>;
   };
+  loadActionCreator: PayloadActionCreator<{
+    page: number,
+    limit: number,
+    filter: string,
+  }>,
   getDisplayValueFunc: (value: T) => string;
-  onChange: (resource: T) => void;
+  onChange: (entity: T) => void;
 };
 
 function SelectEntity<T extends { id: string }>({
   selectors,
+  loadActionCreator,
   getDisplayValueFunc,
   onChange,
 }: Props<T>) {
@@ -27,7 +33,7 @@ function SelectEntity<T extends { id: string }>({
   const status = useSelector(selectors.selectStatus);
   const error = useSelector(selectors.selectError);
 
-  useEntitySearch(filter);
+  useEntitySearch(filter, loadActionCreator);
 
   const handleValueChange = (id: string) => {
     onChange(items.find(r => r.id === id) as T);

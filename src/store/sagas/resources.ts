@@ -4,13 +4,14 @@ import { Paginated } from 'api/modules/shared/dto/Paginated';
 import { GENERIC_ERROR } from 'messages';
 import { all, debounce, fork, put, select } from 'redux-saga/effects';
 import * as fromResources from 'store/slices/Resources';
+import { entityAutocompleteDebounce } from 'constant-values';
 
 const {
   actions: { load, loadSuccess, loadFailure },
 } = fromResources.slice;
 
 function* watchLoad() {
-  yield debounce(1000, load.type, loadWorker);
+  yield debounce(entityAutocompleteDebounce, load.type, loadWorker);
 }
 
 function* loadWorker(action: ReturnType<typeof load>) {

@@ -66,7 +66,6 @@ function AutocompleteInput<T extends { id: string }>({
       <Styled.ComboboxPopover portal={false}>
         {popoverContent(options, loading, error, getDisplayValueFunc)}
       </Styled.ComboboxPopover>
-      )}
     </Styled.Combobox>
   );
 }

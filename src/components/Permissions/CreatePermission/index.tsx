@@ -1,6 +1,8 @@
 import { grantPermissionToRole, grantPermissionToUser } from 'api';
 import { ResourceActionsDto } from 'api/modules/authorization/dto/resource-permission.dto';
 import { ResourceDto } from 'api/modules/authorization/dto/resource.dto';
+import { RoleDto } from 'api/modules/authorization/dto/role.dto';
+import { UserDto } from 'api/modules/users/dto/user.dto';
 import { push } from 'connected-react-router';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -8,6 +10,7 @@ import ActionButton from 'shared/components/ActionButton';
 import PanelContainer from 'shared/components/Container/PanelContainer';
 import { Divider } from 'shared/components/Divider';
 import { Flex } from 'shared/components/Flex';
+import { Select } from 'shared/components/Select';
 import { Stack } from 'shared/components/Stack';
 import { Route } from 'shared/UrlRoute';
 import { Status } from 'util/status';
@@ -16,7 +19,6 @@ import SelectResource from './SelectResource';
 import SelectRole from './SelectRole';
 import SelectUser from './SelectUser';
 import * as Styled from './styled';
-import { Select } from 'shared/components/Select';
 
 type AssigneeType = 'User' | 'Role';
 const assigneeOptions: AssigneeType[] = ['User', 'Role'];
@@ -42,12 +44,12 @@ const CreatePermission = () => {
     setResource(resource);
   };
 
-  const handleUserChange = (userId: string) => {
-    setUserId(userId);
+  const handleUserChange = (user: UserDto) => {
+    setUserId(user.id);
   };
 
-  const handleRoleChange = (roleId: string) => {
-    setRoleId(roleId);
+  const handleRoleChange = (role: RoleDto) => {
+    setRoleId(role.id);
   };
 
   const handleActionValueChange = (
@@ -76,9 +78,7 @@ const CreatePermission = () => {
           <Stack gap={true} gapSize={3} alignItems='flex-start'>
             <Stack gap={true}>
               <Styled.Label>Resource</Styled.Label>
-              <SelectResource
-                onChange={handleResourceChange}
-              />
+              <SelectResource onChange={handleResourceChange} />
             </Stack>
             <Stack gap={true}>
               <Styled.Label>Assignee type</Styled.Label>
@@ -97,12 +97,8 @@ const CreatePermission = () => {
             </Stack>
             <Stack gap={true}>
               <Styled.Label>Assignee</Styled.Label>
-              {assigneeTypeIsUser && (
-                <SelectUser value={userId} onChange={handleUserChange} />
-              )}
-              {assigneeTypeIsRole && (
-                <SelectRole value={roleId} onChange={handleRoleChange} />
-              )}
+              {assigneeTypeIsUser && <SelectUser onChange={handleUserChange} />}
+              {assigneeTypeIsRole && <SelectRole onChange={handleRoleChange} />}
             </Stack>
             <Styled.CrudTable
               actions={actions}

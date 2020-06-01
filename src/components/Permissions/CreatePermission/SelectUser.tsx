@@ -1,40 +1,20 @@
-import React, { useEffect } from 'react';
-import { Loader } from 'react-feather';
-import { useDispatch, useSelector } from 'react-redux';
+import { UserDto } from 'api/modules/users/dto/user.dto';
+import React from 'react';
+import SelectEntity from 'shared/components/SelectEntity/SelectEntity';
 import { selectors, slice } from 'store/slices/Users';
-import { Status } from 'util/status';
 
 type Props = {
-  value: string | undefined;
-  onChange: (id: string) => void;
+  onChange: (user: UserDto) => void;
 };
 
-const SelectUser = ({ value, onChange }: Props) => {
-  const dispatch = useDispatch();
-  const status = useSelector(selectors.selectStatus);
-  const users = useSelector(selectors.selectAll);
-
-  useEffect(() => {
-    dispatch(slice.actions.load());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const handleValueChange = (id: string) => {
-    onChange(id);
-  };
-
-  if (status === Status.Idle) return null;
-  if (status === Status.Loading) return <Loader />;
-
+const SelectUser = ({ onChange }: Props) => {
   return (
-    <select value={value} onChange={e => handleValueChange(e.target.value)}>
-      <option value=''>Choose...</option>
-      {users.map(u => (
-        <option value={u.id} key={u.id}>
-          {u.username}
-        </option>
-      ))}
-    </select>
+    <SelectEntity<UserDto>
+      selectors={selectors}
+      loadActionCreator={slice.actions.load}
+      getDisplayValueFunc={value => value.username}
+      onChange={onChange}
+    />
   );
 };
 

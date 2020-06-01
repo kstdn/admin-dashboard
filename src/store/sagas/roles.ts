@@ -1,23 +1,33 @@
 import { getRoles } from 'api';
-import { invalidateCacheAfter } from 'constant-values';
+import { RoleDto } from 'api/modules/authorization/dto/role.dto';
+import { Paginated } from 'api/modules/shared/dto/Paginated';
+import { entityAutocompleteDebounce } from 'constant-values';
 import { GENERIC_ERROR } from 'messages';
-import { all, fork, put, select } from 'redux-saga/effects';
+import { all, debounce, fork, put, select } from 'redux-saga/effects';
 import * as fromRoles from 'store/slices/Roles';
-import { takeAndValidateCache } from './common';
+
 const {
   actions: { load, loadSuccess, loadFailure },
 } = fromRoles.slice;
 
 function* watchLoad() {
-  yield takeAndValidateCache(load.type, invalidateCacheAfter, loadWorker);
+  yield debounce(entityAutocompleteDebounce, load.type, loadWorker);
 }
 
-function* loadWorker(cacheIsInvalid: boolean) {
+function* loadWorker(action: ReturnType<typeof load>) {
+  if (!action.payload.filter.trim()) return;
+
   try {
-    const roles = cacheIsInvalid
-      ? yield getRoles()
-      : yield select(fromRoles.selectors.selectAll);
-    yield put(loadSuccess(roles));
+    const cache = yield select(fromRoles.selectors.selectCache);
+    const cached = cache[action.payload.filter];
+    const { items }: Paginated<RoleDto> = cached
+      ? { items: cached }
+      : yield getRoles(
+          action.payload.page,
+          action.payload.limit,
+          action.payload.filter,
+        );
+    yield put(loadSuccess({ items, filter: action.payload.filter }));
   } catch {
     yield put(loadFailure(GENERIC_ERROR));
   }

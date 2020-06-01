@@ -1,14 +1,18 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { slice } from 'store/slices/Resources';
+import { PayloadActionCreator } from '@reduxjs/toolkit';
 
-export const useEntitySearch = <T>(searchTerm: string) => {
+export const useEntitySearch = <T>(searchTerm: string, loadAction: PayloadActionCreator<{
+  page: number,
+  limit: number,
+  filter: string,
+}>) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
     const search = async () => {
       dispatch(
-        slice.actions.load({
+        loadAction({
           page: 1,
           limit: 10,
           filter: searchTerm,

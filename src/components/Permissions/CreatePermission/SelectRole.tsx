@@ -1,40 +1,20 @@
-import React, { useEffect } from 'react';
-import { Loader } from 'react-feather';
-import { useDispatch, useSelector } from 'react-redux';
+import { RoleDto } from 'api/modules/authorization/dto/role.dto';
+import React from 'react';
+import SelectEntity from 'shared/components/SelectEntity/SelectEntity';
 import { selectors, slice } from 'store/slices/Roles';
-import { Status } from 'util/status';
 
 type Props = {
-  value: string | undefined;
-  onChange: (id: string) => void;
+  onChange: (role: RoleDto) => void;
 };
 
-const SelectRole = ({ value, onChange }: Props) => {
-  const dispatch = useDispatch();
-  const status = useSelector(selectors.selectStatus);
-  const roles = useSelector(selectors.selectAll);
-
-  useEffect(() => {
-    dispatch(slice.actions.load());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const handleValueChange = (id: string) => {
-    onChange(id);
-  };
-
-  if (status === Status.Idle) return null;
-  if (status === Status.Loading) return <Loader />;
-
+const SelectRole = ({ onChange }: Props) => {
   return (
-    <select onChange={e => handleValueChange(e.target.value)}>
-      <option value={value}>Choose...</option>
-      {roles.map(r => (
-        <option value={r.id} key={r.id}>
-          {r.name}
-        </option>
-      ))}
-    </select>
+    <SelectEntity<RoleDto>
+      selectors={selectors}
+      loadActionCreator={slice.actions.load}
+      getDisplayValueFunc={value => value.name}
+      onChange={onChange}
+    />
   );
 };
 
