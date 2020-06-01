@@ -6,14 +6,15 @@ type Props = {
   header?: JSX.Element;
   content: JSX.Element;
   footer?: JSX.Element;
+  className?: string;
 } & ComponentProps<typeof Tile>;
 
-const Card = ({ header, content, footer, ...boxProps }: Props) => {
+const Card = ({ header, content, footer, className, ...tileProps }: Props) => {
   return (
-    <Styled.Card>
-      {header && <Styled.CardHeader {...boxProps}>{header}</Styled.CardHeader>}
+    <Styled.Card className={className}>
+      {header && <Styled.CardHeader {...tileProps}>{header}</Styled.CardHeader>}
       {content && <Styled.CardContent>{content}</Styled.CardContent>}
-      {footer && <Styled.CardFooter {...boxProps}>{footer}</Styled.CardFooter>}
+      {footer && <Styled.CardFooter {...tileProps}>{footer}</Styled.CardFooter>}
     </Styled.Card>
   );
 };
