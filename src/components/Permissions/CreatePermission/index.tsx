@@ -4,6 +4,7 @@ import { ResourceDto } from 'api/modules/authorization/dto/resource.dto';
 import { RoleDto } from 'api/modules/authorization/dto/role.dto';
 import { UserDto } from 'api/modules/users/dto/user.dto';
 import { push } from 'connected-react-router';
+import { GENERIC_ERROR } from 'messages';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import ActionButton from 'shared/components/ActionButton';
@@ -12,6 +13,7 @@ import { Divider } from 'shared/components/Divider';
 import { Flex } from 'shared/components/Flex';
 import { Select } from 'shared/components/Select';
 import { Stack } from 'shared/components/Stack';
+import { Tile } from 'shared/components/Tile';
 import { Route } from 'shared/UrlRoute';
 import { Status } from 'util/status';
 import { createEmptyActionsSet, mergeChanges } from '../util';
@@ -36,6 +38,10 @@ const CreatePermission = () => {
   const assigneeTypeIsUser = assigneeType === 'User';
   const assigneeTypeIsRole = assigneeType === 'Role';
 
+  const hasValidUserFormData = assigneeTypeIsUser && !!userId && !!resource;
+  const hasValidRoleFormData = assigneeTypeIsRole && !!roleId && !!resource;
+  const formValid = hasValidUserFormData || hasValidRoleFormData;
+
   const handleAssigneeTypeChange = (assigneeType: AssigneeType) => {
     setAssigneeType(assigneeType);
   };
@@ -59,57 +65,73 @@ const CreatePermission = () => {
   };
 
   const handleCreate = async () => {
+    if(!formValid) return;
+    
     setStatus(Status.Loading);
     try {
-      if (assigneeTypeIsUser && userId && resource) {
-        await grantPermissionToUser(userId, resource.id, actions);
-      } else if (assigneeTypeIsRole && roleId && resource) {
-        await grantPermissionToRole(roleId, resource.id, actions);
+      if (hasValidUserFormData) {
+        await grantPermissionToUser(userId!, resource!.id, actions);
+      } else if (hasValidRoleFormData) {
+        await grantPermissionToRole(roleId!, resource!.id, actions);
       }
 
       dispatch(push(Route.Dashboard.Permissions));
-    } catch {}
+    } catch {
+      setStatus(Status.Rejected);
+    }
   };
 
   return (
     <PanelContainer>
       <Styled.Card
         content={
-          <Stack gap={true} gapSize={3} alignItems='flex-start'>
-            <Stack gap={true}>
-              <Styled.Label>Resource</Styled.Label>
-              <SelectResource onChange={handleResourceChange} />
-            </Stack>
-            <Stack gap={true}>
-              <Styled.Label>Assignee type</Styled.Label>
-              <Select
-                name='type'
-                onChange={e =>
-                  handleAssigneeTypeChange(e.target.value as AssigneeType)
+          <>
+            <Stack gap={true} gapSize={3} alignItems='flex-start'>
+              <Stack gap={true}>
+                <Styled.Label>Resource</Styled.Label>
+                <SelectResource onChange={handleResourceChange} />
+              </Stack>
+              <Stack gap={true}>
+                <Styled.Label>Assignee type</Styled.Label>
+                <Select
+                  name='type'
+                  onChange={e =>
+                    handleAssigneeTypeChange(e.target.value as AssigneeType)
+                  }
+                >
+                  {assigneeOptions.map(ao => (
+                    <option value={ao} key={ao}>
+                      {ao}
+                    </option>
+                  ))}
+                </Select>
+              </Stack>
+              <Stack gap={true}>
+                <Styled.Label>Assignee</Styled.Label>
+                {assigneeTypeIsUser && (
+                  <SelectUser onChange={handleUserChange} />
+                )}
+                {assigneeTypeIsRole && (
+                  <SelectRole onChange={handleRoleChange} />
+                )}
+              </Stack>
+              <Styled.CrudTable
+                actions={actions}
+                onChange={actionsChange =>
+                  handleActionValueChange(actionsChange)
                 }
-              >
-                {assigneeOptions.map(ao => (
-                  <option value={ao} key={ao}>
-                    {ao}
-                  </option>
-                ))}
-              </Select>
+              />
             </Stack>
-            <Stack gap={true}>
-              <Styled.Label>Assignee</Styled.Label>
-              {assigneeTypeIsUser && <SelectUser onChange={handleUserChange} />}
-              {assigneeTypeIsRole && <SelectRole onChange={handleRoleChange} />}
-            </Stack>
-            <Styled.CrudTable
-              actions={actions}
-              onChange={actionsChange => handleActionValueChange(actionsChange)}
-            />
-          </Stack>
+            {status === Status.Rejected && (
+              <Tile color='danger'>{GENERIC_ERROR}</Tile>
+            )}
+          </>
         }
         footer={
           <Flex gap={true}>
             <Divider />
             <ActionButton
+              disabled={!formValid}
               onClick={handleCreate}
               isLoading={status === Status.Loading}
             >
