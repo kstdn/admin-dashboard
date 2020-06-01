@@ -5,7 +5,7 @@ import { push } from 'connected-react-router';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import ActionButton from 'shared/components/ActionButton';
-import Card from 'shared/components/Card';
+import PanelContainer from 'shared/components/Container/PanelContainer';
 import { Divider } from 'shared/components/Divider';
 import { Flex } from 'shared/components/Flex';
 import { Stack } from 'shared/components/Stack';
@@ -16,6 +16,7 @@ import SelectResource from './SelectResource';
 import SelectRole from './SelectRole';
 import SelectUser from './SelectUser';
 import * as Styled from './styled';
+import { Select } from 'shared/components/Select';
 
 type AssigneeType = 'User' | 'Role';
 const assigneeOptions: AssigneeType[] = ['User', 'Role'];
@@ -69,20 +70,19 @@ const CreatePermission = () => {
   };
 
   return (
-    <>
-      <Card
+    <PanelContainer>
+      <Styled.Card
         content={
           <Stack gap={true} gapSize={3} alignItems='flex-start'>
             <Stack gap={true}>
               <Styled.Label>Resource</Styled.Label>
               <SelectResource
-                value={resource && resource.id}
                 onChange={handleResourceChange}
               />
             </Stack>
             <Stack gap={true}>
               <Styled.Label>Assignee type</Styled.Label>
-              <select
+              <Select
                 name='type'
                 onChange={e =>
                   handleAssigneeTypeChange(e.target.value as AssigneeType)
@@ -93,7 +93,7 @@ const CreatePermission = () => {
                     {ao}
                   </option>
                 ))}
-              </select>
+              </Select>
             </Stack>
             <Stack gap={true}>
               <Styled.Label>Assignee</Styled.Label>
@@ -122,7 +122,7 @@ const CreatePermission = () => {
           </Flex>
         }
       />
-    </>
+    </PanelContainer>
   );
 };
 
