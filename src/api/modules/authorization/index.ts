@@ -46,7 +46,7 @@ export const grantPermissionToRole = (
   actions: ResourceActionsDto,
 ) => {
   return httpClient.post<ResourcePermissionDto, ResourcePermissionDto>(
-    ApiRoute.PermissionsUser,
+    ApiRoute.PermissionsRole,
     actions,
     {
       params: {
