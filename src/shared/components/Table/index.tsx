@@ -1,5 +1,5 @@
 import React from 'react';
-import { ObjectLiteral } from 'util/types';
+import { ObjectLiteral, KeysForType } from 'util/types';
 import { ColumnDef } from './defs/ColumnDef';
 import * as Styled from './styled';
 import { getHeaderCellText } from './util';
@@ -7,7 +7,7 @@ import { getHeaderCellText } from './util';
 type Props<T> = {
   data: T[];
   columns: ColumnDef<T>[];
-  keyProp: keyof T;
+  keyProp: KeysForType<T, string | number>;
   options?: TableOptions;
 };
 
