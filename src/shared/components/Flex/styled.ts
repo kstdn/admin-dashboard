@@ -7,7 +7,7 @@ type Props = {
   gapSize?: GapSize;
   direction?: 'row' | 'column';
   alignItems?: 'initial' | 'flex-start' | 'flex-end' | 'stretch';
-  wrap?: boolean;
+  shouldWrap?: boolean;
 };
 
 export const Flex = styled.div<Props>`
@@ -18,8 +18,8 @@ export const Flex = styled.div<Props>`
   ${({ alignItems = 'initial' }) => css`
     align-items: ${alignItems};
   `}
-  ${({ wrap = false }) => css`
-    ${wrap && 'flex-wrap: wrap;'};
+  ${({ shouldWrap = false }) => css`
+    ${shouldWrap ? 'flex-wrap: wrap;' : ''};
   `}
   ${({ gap = false, gapSize = 1, direction = 'row' }) =>
     gap &&
