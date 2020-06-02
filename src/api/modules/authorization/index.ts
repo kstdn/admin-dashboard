@@ -1,11 +1,18 @@
 import { httpClient } from 'util/http-client';
 import { Paginated } from '../shared/dto/Paginated';
 import { ApiRoute } from './../../api-route';
-import { ResourceActionsDto, ResourcePermissionDto } from './dto/resource-permission.dto';
+import {
+  ResourceActionsDto,
+  ResourcePermissionDto,
+} from './dto/resource-permission.dto';
 import { ResourceDto } from './dto/resource.dto';
 import { RoleDto } from './dto/role.dto';
 
-export const getPermissions = (page: number, limit: number, filter?: string) => {
+export const getPermissions = (
+  page: number,
+  limit: number,
+  filter?: string,
+) => {
   return httpClient.get<
     Paginated<ResourcePermissionDto>,
     Paginated<ResourcePermissionDto>
@@ -13,7 +20,7 @@ export const getPermissions = (page: number, limit: number, filter?: string) => 
     params: {
       page,
       limit,
-    }
+    },
   });
 };
 
@@ -57,10 +64,7 @@ export const grantPermissionToRole = (
   );
 };
 
-export const updatePermission = (
-  id: string,
-  actions: ResourceActionsDto,
-) => {
+export const updatePermission = (id: string, actions: ResourceActionsDto) => {
   return httpClient.patch<ResourceActionsDto, ResourceActionsDto>(
     `${ApiRoute.Permissions}/${id}`,
     actions,
@@ -72,13 +76,16 @@ export const deletePermission = (id: string) => {
 };
 
 export const getRoles = (page: number, limit: number, filter?: string) => {
-  return httpClient.get<RoleDto[], RoleDto[]>(ApiRoute.Roles, {
-    params: {
-      page,
-      limit,
-      filter: filter && `name,like,${filter}`
-    }
-  });
+  return httpClient.get<Paginated<RoleDto>, Paginated<RoleDto>>(
+    ApiRoute.Roles,
+    {
+      params: {
+        page,
+        limit,
+        filter: filter && `name,like,${filter}`,
+      },
+    },
+  );
 };
 
 export const getRole = (id: string) => {
@@ -87,18 +94,20 @@ export const getRole = (id: string) => {
 
 export const createRole = (name: string) => {
   return httpClient.post<RoleDto, RoleDto>(`${ApiRoute.Roles}`, {
-    params: {
-      name,
-    },
+    name,
   });
 };
 
 export const assignRole = (roleId: string, userId: string) => {
-  return httpClient.post<RoleDto, RoleDto>(`${ApiRoute.Roles}/${roleId}/user/${userId}`);
+  return httpClient.post<RoleDto, RoleDto>(
+    `${ApiRoute.Roles}/${roleId}/user/${userId}`,
+  );
 };
 
 export const unassignRole = (roleId: string, userId: string) => {
-  return httpClient.delete<RoleDto, RoleDto>(`${ApiRoute.Roles}/${roleId}/user/${userId}`);
+  return httpClient.delete<RoleDto, RoleDto>(
+    `${ApiRoute.Roles}/${roleId}/user/${userId}`,
+  );
 };
 
 export const updateRole = (id: string, name: string) => {
@@ -114,11 +123,14 @@ export const deleteRole = (id: string) => {
 };
 
 export const getResources = (page: number, limit: number, filter?: string) => {
-  return httpClient.get<Paginated<ResourceDto>, Paginated<ResourceDto>>(ApiRoute.Resources, {
-    params: {
-      page,
-      limit,
-      filter: filter && `name,like,${filter}`,
-    }
-  });
+  return httpClient.get<Paginated<ResourceDto>, Paginated<ResourceDto>>(
+    ApiRoute.Resources,
+    {
+      params: {
+        page,
+        limit,
+        filter: filter && `name,like,${filter}`,
+      },
+    },
+  );
 };
