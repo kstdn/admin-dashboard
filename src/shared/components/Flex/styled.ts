@@ -5,23 +5,33 @@ type GapSize = 1 | 2 | 3 | 4 | 5;
 type Props = {
   gap?: boolean;
   gapSize?: GapSize;
-  direction?: 'row' | 'column'; 
+  direction?: 'row' | 'column';
   alignItems?: 'initial' | 'flex-start' | 'flex-end' | 'stretch';
+  wrap?: boolean;
 };
 
 export const Flex = styled.div<Props>`
   display: flex;
-  ${({direction = 'row'}) => css`
+  ${({ direction = 'row' }) => css`
     flex-direction: ${direction};
   `}
-  ${({alignItems = 'initial'}) => css`
+  ${({ alignItems = 'initial' }) => css`
     align-items: ${alignItems};
+  `}
+  ${({ wrap = false }) => css`
+    ${wrap && 'flex-wrap: wrap;'};
   `}
   ${({ gap = false, gapSize = 1, direction = 'row' }) =>
     gap &&
     css`
+      & { margin-bottom: calc(var(--space) * -1); }
+
+      & > * { margin-bottom: var(--space); }
+
       & > *:not(:last-child) {
-        margin-${direction === 'row' ? 'inline' : 'block'}-end: var(--space-${gapSize});
+        margin-${
+          direction === 'row' ? 'inline' : 'block'
+        }-end: var(--space-${gapSize});
       }
     `}
 `;
