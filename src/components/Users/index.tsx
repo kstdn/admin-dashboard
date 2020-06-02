@@ -50,7 +50,7 @@ const Users = () => {
   return (
     <SandwichContainer
       header={
-        <Flex gap={true}>
+        <Flex gap={true} wrap={true}>
           <Link to={Route.Dashboard.PermissionsNew}>
             <Button>Create new</Button>
           </Link>
