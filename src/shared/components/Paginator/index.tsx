@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'react-fe
 import styled from 'styled-components/macro';
 import ButtonGroup from '../ButtonGroup';
 import { IconButton } from '../IconButton';
+import { Button } from '../Button';
 
 const PaginatorButtonGroup = styled(ButtonGroup)`
   overflow: auto;
@@ -13,7 +14,7 @@ const NavButton = styled(IconButton)`
   flex-grow: 0;
 `;
 
-const PageButton = styled(IconButton)`
+const PageButton = styled(Button)`
   flex-shrink: 1;
 `;
 
@@ -25,10 +26,17 @@ type Props = {
   onGoToPage: (page: number) => void;
 };
 
-const getOffset = (currentPage: number, totalPages: number, displayedPagesCount: number) => {
+const getOffset = (
+  currentPage: number,
+  totalPages: number,
+  displayedPagesCount: number,
+) => {
   const half = Math.floor(displayedPagesCount / 2);
-  return Math.min(Math.max(currentPage - half, 1), totalPages - displayedPagesCount + 1);
-}
+  return Math.min(
+    Math.max(currentPage - half, 1),
+    totalPages - displayedPagesCount + 1,
+  );
+};
 
 const Paginator = ({
   currentPage,
@@ -37,19 +45,25 @@ const Paginator = ({
   onGoToPage,
 }: Props) => {
   const displayedPagesCount = Math.min(totalPages, maxDisplayedPages);
-  const pages = [...Array(displayedPagesCount).keys()].map(i => i + getOffset(currentPage, totalPages, displayedPagesCount));
+  const pages = [...Array(displayedPagesCount).keys()].map(
+    i => i + getOffset(currentPage, totalPages, displayedPagesCount),
+  );
 
   const hasPrev = currentPage > 1;
   const hasNext = currentPage < totalPages;
 
   return (
     <PaginatorButtonGroup>
-      <NavButton disabled={!hasPrev} onClick={() => onGoToPage(1)}>
-        <ChevronsLeft />
-      </NavButton>
-      <NavButton disabled={!hasPrev} onClick={() => onGoToPage(currentPage - 1)}>
-        <ChevronLeft />
-      </NavButton>
+      <NavButton
+        disabled={!hasPrev}
+        onClick={() => onGoToPage(1)}
+        icon={<ChevronsLeft />}
+      />
+      <NavButton
+        disabled={!hasPrev}
+        onClick={() => onGoToPage(currentPage - 1)}
+        icon={<ChevronLeft />}
+      />
       {pages.map(p => (
         <PageButton
           forceActive={currentPage === p}
@@ -59,12 +73,16 @@ const Paginator = ({
           {p}
         </PageButton>
       ))}
-      <NavButton disabled={!hasNext} onClick={() => onGoToPage(currentPage + 1)}>
-        <ChevronRight />
-      </NavButton>
-      <NavButton disabled={!hasNext} onClick={() => onGoToPage(totalPages)}>
-        <ChevronsRight />
-      </NavButton>
+      <NavButton
+        disabled={!hasNext}
+        onClick={() => onGoToPage(currentPage + 1)}
+        icon={<ChevronRight />}
+      />
+      <NavButton
+        disabled={!hasNext}
+        onClick={() => onGoToPage(totalPages)}
+        icon={<ChevronsRight />}
+      />
     </PaginatorButtonGroup>
   );
 };
