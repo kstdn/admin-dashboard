@@ -1,6 +1,7 @@
 import React from 'react';
-import { ObjectLiteral, KeysForType } from 'util/types';
-import { ColumnDef } from './defs/ColumnDef';
+import { KeysForType, ObjectLiteral } from 'util/types';
+import { injectProps } from '../../../util/injectProps';
+import { ColumnDef, defaultColumnDef } from './defs/ColumnDef';
 import * as Styled from './styled';
 import { getHeaderCellText } from './util';
 
@@ -12,14 +13,22 @@ type Props<T> = {
 };
 
 export type TableOptions = {
-  textAlign?: 'start' | 'center' | 'end';
   renderLineBetweenColumns?: boolean;
 };
 
 const defaultOptions: TableOptions = {
-  textAlign: 'start',
   renderLineBetweenColumns: false,
 };
+
+function getComponent<TData>(columnDef: ColumnDef<TData>, row: TData) {
+  const componentDef = columnDef.component;
+  return componentDef &&
+    injectProps(() => ({
+      ...componentDef.ownProps,
+      row,
+      value: row[columnDef.prop],
+    }))(componentDef.type);
+}
 
 function Table<TData extends ObjectLiteral>({
   data,
@@ -27,24 +36,38 @@ function Table<TData extends ObjectLiteral>({
   keyProp,
   options,
 }: Props<TData>) {
-  const { textAlign, renderLineBetweenColumns } = options || defaultOptions;
+  const { renderLineBetweenColumns } = options || defaultOptions;
 
   return (
-    <Styled.Grid columnsCount={columns.length} renderLineBetweenColumns={renderLineBetweenColumns}>
+    <Styled.Grid
+      columnsCount={columns.length}
+      renderLineBetweenColumns={renderLineBetweenColumns}
+    >
       <>
         {columns.map(col => (
-          <Styled.HeaderCell textAlign={textAlign} key={col.prop as string}>
+          <Styled.HeaderCell textAlign={col.textAlign} key={col.prop as string}>
             {getHeaderCellText(col)}
           </Styled.HeaderCell>
         ))}
       </>
       <>
-        {data.map(value => {
-          return columns.map(col => (
-            <Styled.Cell textAlign={textAlign} key={col.prop + value[keyProp]}>
-              {value[col.prop]}
-            </Styled.Cell>
-          ));
+        {data.map(row => {
+          return columns.map(col => {
+            const CellComponent = getComponent(col, row);
+            const { textAlign } = { ...defaultColumnDef, ...col };
+            return (
+              <Styled.Cell
+                textAlign={textAlign}
+                key={col.prop + row[keyProp]}
+              >
+                {CellComponent ? (
+                  <CellComponent />
+                ) : (
+                  row[col.prop]
+                )}
+              </Styled.Cell>
+            );
+          });
         })}
       </>
     </Styled.Grid>

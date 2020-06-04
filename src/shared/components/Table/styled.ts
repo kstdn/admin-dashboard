@@ -1,10 +1,11 @@
 import styled, { css } from 'styled-components/macro';
 import { textOverflowEllipsis } from 'styles/mixins/textOverflowEllipsis';
 import { TableOptions } from '.';
+import { ColumnDef } from './defs/ColumnDef';
 
 const amongLastNChildren = (count: number) => `:nth-last-child(-n+${count})`;
 
-export const Cell = styled.div<Pick<TableOptions, 'textAlign'>>`
+export const Cell = styled.div<Pick<ColumnDef<any>, 'textAlign'>>`
   ${textOverflowEllipsis}
   padding: var(--space);
 
