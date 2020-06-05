@@ -1,6 +1,7 @@
 import React from 'react';
 import { KeysForType, ObjectLiteral } from 'util/types';
 import { injectProps } from '../../../util/injectProps';
+import InlineEdit from './components/InlineEdit';
 import { ColumnDef, defaultColumnDef } from './defs/ColumnDef';
 import * as Styled from './styled';
 import { getHeaderCellText } from './util';
@@ -10,6 +11,14 @@ type Props<T> = {
   columns: ColumnDef<T>[];
   keyProp: KeysForType<T, string | number>;
   options?: TableOptions;
+  edit?: EditDef<T>;
+};
+
+export type EditDef<T> = {
+  matches: (row: T) => boolean;
+  prop: keyof T;
+  onChange?: (value: string) => any;
+  onSubmit?: (value: string) => any;
 };
 
 export type TableOptions = {
@@ -36,19 +45,40 @@ function getComponent<TData>(columnDef: ColumnDef<TData>, row: TData) {
   );
 }
 
+function getCellContent<TData>(
+  columnDef: ColumnDef<TData>,
+  row: TData,
+  edit: EditDef<TData> | undefined,
+) {
+  const CellComponent = getComponent(columnDef, row);
+  const rawValue = (row[columnDef.prop] as unknown) as string;
+
+  if (CellComponent) {
+    return <CellComponent />;
+  } else if (edit && edit.matches(row) && edit.prop === columnDef.prop) {
+    return (
+      <InlineEdit
+        value={rawValue}
+        onChange={edit.onChange}
+        onSubmit={edit.onSubmit}
+      />
+    );
+  }
+  return row[columnDef.prop];
+}
+
 function Table<TData extends ObjectLiteral>({
   data,
   columns,
   keyProp,
   options,
+  edit,
 }: Props<TData>) {
   const { renderLineBetweenColumns, headerRowHeight, rowHeight } =
     options || defaultOptions;
 
   return (
-    <Styled.Table
-      renderLineBetweenColumns={renderLineBetweenColumns}
-    >
+    <Styled.Table renderLineBetweenColumns={renderLineBetweenColumns}>
       <>
         {columns.map(column => (
           <Styled.Column key={`${column.prop}`}>
@@ -60,7 +90,6 @@ function Table<TData extends ObjectLiteral>({
               {getHeaderCellText(column)}
             </Styled.HeaderCell>
             {data.map(row => {
-              const CellComponent = getComponent(column, row);
               const { align } = { ...defaultColumnDef, ...column };
               return (
                 <Styled.Cell
@@ -68,7 +97,7 @@ function Table<TData extends ObjectLiteral>({
                   height={rowHeight}
                   key={column.prop + row[keyProp]}
                 >
-                  {CellComponent ? <CellComponent /> : row[column.prop]}
+                  {getCellContent(column, row, edit)}
                 </Styled.Cell>
               );
             })}
@@ -78,6 +107,5 @@ function Table<TData extends ObjectLiteral>({
     </Styled.Table>
   );
 }
-
 export default Table;
 export type { ColumnDef };
