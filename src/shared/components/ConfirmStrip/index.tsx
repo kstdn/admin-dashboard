@@ -1,21 +1,17 @@
 import React, { cloneElement, ReactNode, useState } from 'react';
+import { Check, X } from 'react-feather';
 import styled from 'styled-components/macro';
-import { Button } from '../Button';
 import { Divider } from '../Divider';
 import { Flex } from '../Flex';
+import { IconButton } from '../IconButton';
 
-const Container = styled.div`
-  height: 100%;
-  width: 100%;
-`;
-
-const SecondScreen = styled(Flex).attrs({gap: true})`
+const SecondScreen = styled(Flex).attrs({ gap: true })`
   align-items: center;
 `;
 
 type Props = {
   trigger: JSX.Element;
-  children: ReactNode;
+  children?: ReactNode;
   onConfirm?: Function;
   onReject?: Function;
 };
@@ -40,29 +36,33 @@ const ConfirmStrip = ({
   };
 
   return (
-    <Container>
+    <>
       {!secondScreenVisible && (
-        <Flex gap={true}>
+        <Flex gap={true} inline={true}>
           {cloneElement(trigger, {
             onClick: handleTriggerClick,
           })}
-          <Divider />
-          {children}
+          {children && (
+            <>
+              <Divider />
+              {children}
+            </>
+          )}
         </Flex>
       )}
       {secondScreenVisible && (
         <SecondScreen>
-          {'Are you sure?'}
+          <span>{'Are you sure?'}</span>
           <Divider />
-          <Button color='success' onClick={handleConfirm}>
-            Yes
-          </Button>
-          <Button color='danger' onClick={handleReject}>
-            No
-          </Button>
+          <IconButton
+            icon={<Check />}
+            color='success'
+            onClick={handleConfirm}
+          />
+          <IconButton icon={<X />} color='danger' onClick={handleReject} />
         </SecondScreen>
       )}
-    </Container>
+    </>
   );
 };
 
