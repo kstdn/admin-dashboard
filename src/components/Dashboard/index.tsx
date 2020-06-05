@@ -32,6 +32,7 @@ export const Dashboard = () => {
       </Styled.DashboardHeader>
       <Tiles.Users />
       <Tiles.Permissions />
+      <Tiles.Roles />
     </Styled.Dashboard>
   ) : (
     <Loader />
