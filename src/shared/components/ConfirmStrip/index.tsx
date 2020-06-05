@@ -11,14 +11,16 @@ const SecondScreen = styled(Flex).attrs({ gap: true })`
 
 type Props = {
   trigger: JSX.Element;
-  children?: ReactNode;
+  beforeTrigger?: ReactNode;
+  afterTrigger?: ReactNode;
   onConfirm?: Function;
   onReject?: Function;
 };
 
 const ConfirmStrip = ({
   trigger,
-  children,
+  beforeTrigger,
+  afterTrigger,
   onConfirm = () => {},
   onReject = () => {},
 }: Props) => {
@@ -39,15 +41,11 @@ const ConfirmStrip = ({
     <>
       {!secondScreenVisible && (
         <Flex gap={true} inline={true}>
+          {beforeTrigger}
           {cloneElement(trigger, {
             onClick: handleTriggerClick,
           })}
-          {children && (
-            <>
-              <Divider />
-              {children}
-            </>
-          )}
+          {afterTrigger}
         </Flex>
       )}
       {secondScreenVisible && (
