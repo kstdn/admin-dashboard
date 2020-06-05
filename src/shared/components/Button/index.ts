@@ -9,6 +9,8 @@ export const Button = styled(Tile).attrs(_ => ({
   renderBorder: true
 }))<Props>`
   text-transform: uppercase;
+  font-size: var(--font-size);
+  line-height: var(--font-size);
   
   &[disabled] {
     pointer-events: none;
