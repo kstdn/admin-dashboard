@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components/macro';
 type GapSize = 1 | 2 | 3 | 4 | 5;
 
 type Props = {
+  inline?: boolean;
   gap?: boolean;
   gapSize?: GapSize;
   direction?: 'row' | 'column';
@@ -11,22 +12,24 @@ type Props = {
 };
 
 export const Flex = styled.div<Props>`
-  display: flex;
+  ${({ inline = false }) => css`
+    display: ${inline ? 'inline-' : ''}flex;
+  `}
   ${({ direction = 'row' }) => css`
     flex-direction: ${direction};
   `}
   ${({ alignItems = 'initial' }) => css`
     align-items: ${alignItems};
   `}
-  ${({ shouldWrap = false }) => css`
-    ${shouldWrap ? 'flex-wrap: wrap;' : ''};
-  `}
-  ${({ gap = false, gapSize = 1, direction = 'row' }) =>
+  ${({ gap = false, gapSize = 1, direction = 'row', shouldWrap = false }) =>
     gap &&
     css`
-      & { margin-bottom: calc(var(--space) * -1); }
 
-      & > * { margin-bottom: var(--space); }
+      ${shouldWrap ? `
+        flex-wrap: wrap;
+        & { margin-bottom: calc(var(--space-${gapSize}) * -1); }
+        & > * { margin-bottom: var(--space-${gapSize}); }
+      ` : ''};
 
       & > *:not(:last-child) {
         margin-${
