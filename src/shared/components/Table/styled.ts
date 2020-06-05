@@ -3,14 +3,27 @@ import { textOverflowEllipsis } from 'styles/mixins/textOverflowEllipsis';
 import { TableOptions } from '.';
 import { ColumnDef } from './defs/ColumnDef';
 
-const amongLastNChildren = (count: number) => `:nth-last-child(-n+${count})`;
+export const Column = styled.div`
+  flex-grow: 1;
+  overflow: hidden;
+`;
 
-export const Cell = styled.div<Pick<ColumnDef<any>, 'textAlign'>>`
+type Props = Pick<ColumnDef<any>, 'align'> & {
+  height: TableOptions['rowHeight'];
+};
+
+export const Cell = styled.div<Props>`
   ${textOverflowEllipsis}
   padding: var(--space);
+  display: flex;
+  align-items: center;
 
-  ${({ textAlign }) => css`
-    text-align: ${textAlign};
+  ${({ height }) => css`
+    height: ${height}px;
+  `}
+
+  ${({ align }) => css`
+    justify-content: flex-${align};
   `}
 `;
 
@@ -18,22 +31,21 @@ export const HeaderCell = styled(Cell)`
   font-weight: var(--font-weight-accent);
 `;
 
-export const Grid = styled.div<
-  { columnsCount: number } & Pick<TableOptions, 'renderLineBetweenColumns'>
+export const Table = styled.div<
+  Pick<TableOptions, 'renderLineBetweenColumns'>
 >`
-  display: grid;
+  display: flex;
 
   --border: 1px solid var(--text-color);
 
-  ${({ columnsCount, renderLineBetweenColumns }) =>
-    `grid-template-columns: repeat(${columnsCount}, minmax(100px, 1fr));
-
-    ${Cell}:not(${amongLastNChildren(columnsCount)}) {
+  ${({ renderLineBetweenColumns }) =>
+    `
+    ${Cell}:not(:last-child) {
       border-bottom: var(--border);
     }
 
-    ${Cell}:not(:nth-child(${columnsCount}n)) {
-      ${renderLineBetweenColumns && `border-right: var(--border);`}
+    ${Column}:not(:last-child) {
+      ${renderLineBetweenColumns ? 'border-right: var(--border);' : ''}
     }
     `}
 `;
