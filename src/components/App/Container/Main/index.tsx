@@ -11,6 +11,7 @@ const StyledMain = styled(Stack).attrs({
   background: var(--background-color);
   color: var(--text-color);
   padding: var(--space-2);
+  overflow: hidden;
 `;
 
 export const Main: FC = ({ children }) => {
