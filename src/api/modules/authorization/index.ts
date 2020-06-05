@@ -112,9 +112,7 @@ export const unassignRole = (roleId: string, userId: string) => {
 
 export const updateRole = (id: string, name: string) => {
   return httpClient.patch<RoleDto, RoleDto>(`${ApiRoute.Roles}/${id}`, {
-    params: {
-      name,
-    },
+    name,
   });
 };
 
