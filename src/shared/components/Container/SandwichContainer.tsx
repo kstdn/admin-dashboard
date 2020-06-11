@@ -2,6 +2,10 @@ import React, { ReactNode } from 'react';
 import styled from 'styled-components/macro';
 import { Stack } from '../Stack';
 
+const Container = styled(Stack)`
+  height: 100%;
+`;
+
 const Header = styled.div`
   flex-shrink: 0;
 `;
@@ -30,11 +34,11 @@ type Props = {
  */
 const SandwichContainer = ({ header, content, footer, className }: Props) => {
   return (
-    <Stack gap={true} className={className}>
-      <Header>{header}</Header>
-      <Content>{content}</Content>
-      <Footer>{footer}</Footer>
-    </Stack>
+    <Container gap={true} className={className}>
+      { header && <Header>{header}</Header> }
+      { content && <Content>{content}</Content> }
+      { footer && <Footer>{footer}</Footer> }
+    </Container>
   );
 };
 
