@@ -10,6 +10,7 @@ import ActionButton from 'shared/components/ActionButton';
 import { Button } from 'shared/components/Button';
 import Card from 'shared/components/Card';
 import ConfirmStrip from 'shared/components/ConfirmStrip';
+import { Divider } from 'shared/components/Divider';
 import { Tile } from 'shared/components/Tile';
 import { Status } from 'util/status';
 import {
@@ -147,22 +148,26 @@ const Permission = ({ permission, onUpdate, onDelete }: Props) => {
                   Delete
                 </ActionButton>
               }
+              afterTrigger={
+                <>
+                  <Divider />
+                  {hasChanges && (
+                    <Button color='accent' onClick={reset}>
+                      Reset
+                    </Button>
+                  )}
+                  <ActionButton
+                    color='success'
+                    disabled={!hasChanges}
+                    onClick={handleUpdate}
+                    isLoading={updateStatus === Status.Loading}
+                  >
+                    Save changes
+                  </ActionButton>
+                </>
+              }
               onConfirm={handleDelete}
-            >
-              {hasChanges && (
-                <Button color='accent' onClick={reset}>
-                  Reset
-                </Button>
-              )}
-              <ActionButton
-                color='success'
-                disabled={!hasChanges}
-                onClick={handleUpdate}
-                isLoading={updateStatus === Status.Loading}
-              >
-                Save changes
-              </ActionButton>
-            </ConfirmStrip>
+            />
           </>
         }
       />

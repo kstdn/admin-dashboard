@@ -11,15 +11,16 @@ import ActionButton from 'shared/components/ActionButton';
 import PanelContainer from 'shared/components/Container/PanelContainer';
 import { Divider } from 'shared/components/Divider';
 import { Flex } from 'shared/components/Flex';
+import { Label } from 'shared/components/Label';
 import { Select } from 'shared/components/Select';
 import { Stack } from 'shared/components/Stack';
 import { Tile } from 'shared/components/Tile';
 import { Route } from 'shared/UrlRoute';
 import { Status } from 'util/status';
+import SelectResource from '../../../shared/components/SelectResource';
+import SelectRole from '../../../shared/components/SelectRole';
+import SelectUser from '../../../shared/components/SelectUser';
 import { createEmptyActionsSet, mergeChanges } from '../util';
-import SelectResource from './SelectResource';
-import SelectRole from './SelectRole';
-import SelectUser from './SelectUser';
 import * as Styled from './styled';
 
 type AssigneeType = 'User' | 'Role';
@@ -65,8 +66,8 @@ const CreatePermission = () => {
   };
 
   const handleCreate = async () => {
-    if(!formValid) return;
-    
+    if (!formValid) return;
+
     setStatus(Status.Loading);
     try {
       if (hasValidUserFormData) {
@@ -88,11 +89,11 @@ const CreatePermission = () => {
           <>
             <Stack gap={true} gapSize={3} alignItems='flex-start'>
               <Stack gap={true}>
-                <Styled.Label>Resource</Styled.Label>
+                <Label>Resource</Label>
                 <SelectResource onChange={handleResourceChange} />
               </Stack>
               <Stack gap={true}>
-                <Styled.Label>Assignee type</Styled.Label>
+                <Label>Assignee type</Label>
                 <Select
                   name='type'
                   onChange={e =>
@@ -107,7 +108,7 @@ const CreatePermission = () => {
                 </Select>
               </Stack>
               <Stack gap={true}>
-                <Styled.Label>Assignee</Styled.Label>
+                <Label>Assignee</Label>
                 {assigneeTypeIsUser && (
                   <SelectUser onChange={handleUserChange} />
                 )}

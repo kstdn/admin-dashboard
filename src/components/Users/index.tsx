@@ -4,6 +4,7 @@ import { entityInitialLimit, entityInitialPage } from 'constant-values';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from 'shared/components/Button';
+import SandwichContainer from 'shared/components/Container/SandwichContainer';
 import { Divider } from 'shared/components/Divider';
 import { Flex } from 'shared/components/Flex';
 import LimitSelector from 'shared/components/LimitSelector';
@@ -14,7 +15,6 @@ import { useEntityState } from 'shared/hooks/useEntityState';
 import { useLoadEntityPaginated } from 'shared/hooks/useLoadEntityPaginated';
 import { Route } from 'shared/UrlRoute';
 import { Status } from 'util/status';
-import * as Styled from './styled';
 
 const columns: ColumnDef<UserDto>[] = [
   {
@@ -48,7 +48,7 @@ const Users = () => {
   if (status === Status.Loading) return <Loader />;
 
   return (
-    <Styled.SandwichContainer
+    <SandwichContainer
       header={
         <Flex gap={true} shouldWrap={true}>
           <Link to={Route.Dashboard.PermissionsNew}>
@@ -66,7 +66,7 @@ const Users = () => {
             totalPages={paginationData.totalPages}
             maxDisplayedPages={5}
             onGoToPage={page => setPage(page)}
-          ></Paginator>
+          />
         )
       }
     />
