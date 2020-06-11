@@ -7,23 +7,19 @@ import { CellProps } from 'shared/components/Table/defs/CellProps';
 import { Status } from 'util/status';
 
 type OwnProps = {
-  getUpdateStatus: (role: RoleDto) => Status,
-  getDeleteStatus: (role: RoleDto) => Status,
-  onDeleteClick: (row: RoleDto) => void;
-  onUpdateToggle: (row: RoleDto) => void;
+  getDeleteStatus: (role: RoleDto) => Status;
+  onDeleteClick: (row: RoleDto) => any;
+  onEditClick: (row: RoleDto) => any;
 };
 
 const ActionsCell: FC<OwnProps & CellProps<RoleDto>> = ({
   row,
-  value,
-  getUpdateStatus,
   getDeleteStatus,
   onDeleteClick,
-  onUpdateToggle,
+  onEditClick,
 }) => {
-  const isUpdateLoading = getUpdateStatus(row) === Status.Loading;
   const isDeleteLoading = getDeleteStatus(row) === Status.Loading;
-  
+
   return (
     <ConfirmStrip
       trigger={
@@ -35,9 +31,8 @@ const ActionsCell: FC<OwnProps & CellProps<RoleDto>> = ({
       }
       beforeTrigger={
         <IconButton
-          onClick={() => onUpdateToggle(row)}
-          icon={isUpdateLoading ? <Loader /> : <Edit />}
-          disabled={isUpdateLoading}
+          onClick={() => onEditClick(row)}
+          icon={<Edit />}
           color='accent'
         />
       }

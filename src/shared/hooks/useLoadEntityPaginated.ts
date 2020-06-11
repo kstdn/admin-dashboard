@@ -27,7 +27,7 @@ export const useLoadEntityPaginated = <T>(
         setState({
           items,
           paginationData,
-          status: Status.Resolved,
+          status: items.length === 0 ? Status.ResolvedEmpty : Status.Resolved,
           error: undefined,
         });
       }

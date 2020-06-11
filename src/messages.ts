@@ -5,3 +5,4 @@ export const CREATE_SUCCESS = 'Create successful';
 export const UPDATE_ERROR = 'Update unsuccessful';
 export const DELETE_ERROR = 'Delete unsuccessful';
 export const NO_RESULTS = 'No results found';
+export const EMPTY_LIST = 'This list is empty';

@@ -1,33 +1,31 @@
-import { deleteRole, getRoles, updateRole } from 'api';
+import { deleteRole, getRoles } from 'api';
 import { RoleDto } from 'api/modules/authorization/dto/role.dto';
 import { entityInitialLimit, entityInitialPage } from 'constant-values';
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { Button } from 'shared/components/Button';
+import SandwichContainer from 'shared/components/Container/SandwichContainer';
 import { Divider } from 'shared/components/Divider';
 import { Flex } from 'shared/components/Flex';
 import LimitSelector from 'shared/components/LimitSelector';
 import Loader from 'shared/components/Loader';
 import Paginator from 'shared/components/Paginator';
-import Table, { ColumnDef, EditDef } from 'shared/components/Table';
+import Table, { ColumnDef } from 'shared/components/Table';
 import { useEntityState } from 'shared/hooks/useEntityState';
 import { useLoadEntityPaginated } from 'shared/hooks/useLoadEntityPaginated';
+import { Route } from 'shared/UrlRoute';
 import { Status } from 'util/status';
 import ActionsCell from './ActionsCell';
-import CreateRole from './CreateRole';
-import * as Styled from './styled';
 
 const columns: (
-  onUpdateToggle: Function,
+  onEditClick: Function,
   onDeleteClick: Function,
-  updateStatus: Status,
   deleteStatus: Status,
-  updateInProgressId: string | undefined,
   deleteInProgressId: string | undefined,
 ) => ColumnDef<RoleDto>[] = (
-  onUpdateToggle,
+  onEditClick,
   onDeleteClick,
-  updateStatus,
   deleteStatus,
-  updateInProgressId,
   deleteInProgressId,
 ) => [
   {
@@ -40,10 +38,8 @@ const columns: (
     component: {
       type: ActionsCell,
       ownProps: {
-        onUpdateToggle,
+        onEditClick,
         onDeleteClick,
-        getUpdateStatus: (role: RoleDto) =>
-          role.id === updateInProgressId ? updateStatus : Status.Idle,
         getDeleteStatus: (role: RoleDto) =>
           role.id === deleteInProgressId ? deleteStatus : Status.Idle,
       },
@@ -52,24 +48,18 @@ const columns: (
   },
 ];
 
-const content = (
-  roles: RoleDto[],
-  columns: ColumnDef<RoleDto>[],
-  edit: EditDef<RoleDto> | undefined,
-) => {
-  return <Table data={roles} columns={columns} edit={edit} keyProp={'id'} />;
+const content = (roles: RoleDto[], columns: ColumnDef<RoleDto>[]) => {
+  return <Table data={roles} columns={columns} keyProp={'id'} />;
 };
 
 const Roles = () => {
+  const history = useHistory();
+
   const [page, setPage] = useState(entityInitialPage);
   const [limit, setLimit] = useState(entityInitialLimit);
 
-  const [currentEdit, setCurrentEdit] = useState<EditDef<RoleDto>>();
-
-  const [updateInProgressId, setUpdateInProgressId] = useState<string>();
   const [deleteInProgressId, setDeleteInProgressId] = useState<string>();
 
-  const [updateStatus, setUpdateStatus] = useState(Status.Idle);
   const [deleteStatus, setDeleteStatus] = useState(Status.Idle);
 
   const [state, setState] = useEntityState<RoleDto>();
@@ -77,31 +67,12 @@ const Roles = () => {
 
   const { refresh } = useLoadEntityPaginated(getRoles, setState, page, limit);
 
-  const onUpdateToggle = (row: RoleDto) => {
-    if (currentEdit && currentEdit.matches(row)) {
-      setCurrentEdit(undefined);
-    } else {
-      setCurrentEdit({
-        matches: (r: RoleDto) => r.id === row.id,
-        prop: 'name',
-        onSubmit: value => handleUpdate(row.id, value),
-      });
-    }
+  const handleCreateNewClick = () => {
+    history.push(Route.Dashboard.RolesNew);
   };
 
-  const handleUpdate = async (id: string, name: string) => {
-    try {
-      setUpdateStatus(Status.Loading);
-      setUpdateInProgressId(id);
-      await updateRole(id, name);
-      setUpdateStatus(Status.Resolved);
-      setCurrentEdit(undefined);
-      setUpdateInProgressId(undefined);
-      onUpdateSuccess && onUpdateSuccess();
-    } catch {
-      setUpdateStatus(Status.Rejected);
-      setUpdateInProgressId(undefined);
-    }
+  const onEditClick = (row: RoleDto) => {
+    history.push(Route.Dashboard.RolesEdit, row);
   };
 
   const handleDelete = async (role: RoleDto) => {
@@ -118,14 +89,6 @@ const Roles = () => {
     }
   };
 
-  const onCreateSuccess = () => {
-    refresh();
-  };
-
-  const onUpdateSuccess = () => {
-    refresh();
-  };
-
   const onDeleteSuccess = () => {
     refresh();
   };
@@ -133,10 +96,10 @@ const Roles = () => {
   if (status === Status.Idle) return null;
 
   return (
-    <Styled.SandwichContainer
+    <SandwichContainer
       header={
         <Flex gap={true} shouldWrap={true}>
-          <CreateRole onSuccess={onCreateSuccess} />
+          <Button onClick={handleCreateNewClick}>Create New</Button>
           <Divider />
           <LimitSelector value={limit} onChange={setLimit}></LimitSelector>
         </Flex>
@@ -148,14 +111,11 @@ const Roles = () => {
           content(
             roles,
             columns(
-              onUpdateToggle,
+              onEditClick,
               handleDelete,
-              updateStatus,
               deleteStatus,
-              updateInProgressId,
               deleteInProgressId,
             ),
-            currentEdit,
           )
         )
       }
