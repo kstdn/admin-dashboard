@@ -10,11 +10,11 @@ export const Column = styled.div`
 
 type Props = Pick<ColumnDef<any>, 'align'> & {
   height: TableOptions['rowHeight'];
+  renderPadding: ColumnDef<any>['renderCellPadding'];
 };
 
 export const Cell = styled.div<Props>`
   ${textOverflowEllipsis}
-  padding: var(--space);
   display: flex;
   align-items: center;
 
@@ -23,7 +23,11 @@ export const Cell = styled.div<Props>`
   `}
 
   ${({ align }) => css`
-    justify-content: flex-${align};
+    justify-content: ${'flex-' + align};
+  `}
+
+  ${({ renderPadding }) => css`
+    ${renderPadding ? 'padding: var(--space)' : ''};
   `}
 `;
 
@@ -32,20 +36,20 @@ export const HeaderCell = styled(Cell)`
 `;
 
 export const Table = styled.div<
-  Pick<TableOptions, 'renderLineBetweenColumns'>
+  Pick<TableOptions, 'renderBorderBetweenRows' | 'renderBorderBetweenColumns'>
 >`
   display: flex;
 
   --border: 1px solid var(--text-color);
 
-  ${({ renderLineBetweenColumns }) =>
+  ${({ renderBorderBetweenRows, renderBorderBetweenColumns }) =>
     `
     ${Cell}:not(:last-child) {
-      border-bottom: var(--border);
+      ${renderBorderBetweenRows ? 'border-bottom: var(--border)' : ''};
     }
 
     ${Column}:not(:last-child) {
-      ${renderLineBetweenColumns ? 'border-right: var(--border);' : ''}
+      ${renderBorderBetweenColumns ? 'border-right: var(--border);' : ''}
     }
     `}
 `;

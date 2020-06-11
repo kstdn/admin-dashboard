@@ -22,13 +22,17 @@ export type EditDef<T> = {
 };
 
 export type TableOptions = {
-  renderLineBetweenColumns?: boolean;
+  renderHeader?: boolean;
+  renderBorderBetweenRows?: boolean;
+  renderBorderBetweenColumns?: boolean;
   headerRowHeight?: number;
   rowHeight?: number;
 };
 
 const defaultOptions: TableOptions = {
-  renderLineBetweenColumns: false,
+  renderHeader: true,
+  renderBorderBetweenRows: true,
+  renderBorderBetweenColumns: false,
   headerRowHeight: 52,
   rowHeight: 52,
 };
@@ -74,27 +78,39 @@ function Table<TData extends ObjectLiteral>({
   options,
   edit,
 }: Props<TData>) {
-  const { renderLineBetweenColumns, headerRowHeight, rowHeight } =
-    options || defaultOptions;
+  const {
+    renderHeader,
+    renderBorderBetweenRows,
+    renderBorderBetweenColumns,
+    headerRowHeight,
+    rowHeight,
+  } = options || defaultOptions;
 
   return (
-    <Styled.Table renderLineBetweenColumns={renderLineBetweenColumns}>
+    <Styled.Table
+      renderBorderBetweenRows={renderBorderBetweenRows}
+      renderBorderBetweenColumns={renderBorderBetweenColumns}
+    >
       <>
         {columns.map(column => (
           <Styled.Column key={`${column.prop}`}>
-            <Styled.HeaderCell
-              height={headerRowHeight}
-              align={column.align}
-              key={column.prop as string}
-            >
-              {getHeaderCellText(column)}
-            </Styled.HeaderCell>
+            {renderHeader && (
+              <Styled.HeaderCell
+                height={headerRowHeight}
+                align={column.align}
+                renderPadding={column.renderHeaderCellPadding}
+                key={column.prop as string}
+              >
+                {getHeaderCellText(column)}
+              </Styled.HeaderCell>
+            )}
             {data.map(row => {
               const { align } = { ...defaultColumnDef, ...column };
               return (
                 <Styled.Cell
                   align={align}
                   height={rowHeight}
+                  renderPadding={column.renderCellPadding}
                   key={column.prop + row[keyProp]}
                 >
                   {getCellContent(column, row, edit)}
