@@ -1,8 +1,10 @@
 import { ButtonHTMLAttributes, ComponentProps } from 'react';
-import styled from 'styled-components/macro';
+import styled, { css } from 'styled-components/macro';
 import { Tile } from '../Tile';
 
-type Props = ButtonHTMLAttributes<ComponentProps<typeof Tile>>;
+type Props = ButtonHTMLAttributes<ComponentProps<typeof Tile>> & {
+  size?: 'small' | 'regular' | 'big';
+};
 
 export const Button = styled(Tile).attrs(_ => ({
   as: 'button',
@@ -16,4 +18,9 @@ export const Button = styled(Tile).attrs(_ => ({
     pointer-events: none;
     opacity: 0.5;
   }
+
+  ${({size = 'regular', renderPadding}) => css`
+    ${ renderPadding !== false && size === 'small' ? 'padding: var(--space-05);' : ''} 
+    ${ renderPadding !== false && size === 'big' ? 'padding: var(--space-2);' : ''} 
+  `}
 `;
