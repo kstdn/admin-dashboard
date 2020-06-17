@@ -9,5 +9,6 @@ export const Route = {
     RolesEdit: '/dashboard/roles/edit',
     Permissions: '/dashboard/permissions',
     PermissionsNew: '/dashboard/permissions/new',
+    PermissionsEdit: '/dashboard/permissions/edit',
   },
 };

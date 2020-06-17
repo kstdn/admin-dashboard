@@ -1,5 +1,5 @@
 import Permissions from 'components/Permissions';
-import CreatePermission from 'components/Permissions/CreatePermission';
+import PermissionForm from 'components/Permissions/PermissionForm';
 import Users from 'components/Users';
 import React from 'react';
 import { Redirect, Route as RouteComp, Switch } from 'react-router-dom';
@@ -18,7 +18,8 @@ export default function AuthenticatedRoutes() {
       <RouteComp path={Route.Dashboard.RolesNew} component={RoleForm} />
       <RouteComp path={Route.Dashboard.RolesEdit} component={RoleForm} />
       <RouteComp exact path={Route.Dashboard.Permissions} component={Permissions} />
-      <RouteComp path={Route.Dashboard.PermissionsNew} component={CreatePermission} />
+      <RouteComp exact path={Route.Dashboard.PermissionsNew} component={PermissionForm} />
+      <RouteComp exact path={Route.Dashboard.PermissionsEdit} component={PermissionForm} />
     </Switch>
   );
 }

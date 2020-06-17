@@ -1,12 +1,14 @@
 import { grantPermissionToRole, grantPermissionToUser } from 'api';
-import { ResourceActionsDto } from 'api/modules/authorization/dto/resource-permission.dto';
+import {
+  ResourceActionsDto,
+  ResourcePermissionDto,
+} from 'api/modules/authorization/dto/resource-permission.dto';
 import { ResourceDto } from 'api/modules/authorization/dto/resource.dto';
 import { RoleDto } from 'api/modules/authorization/dto/role.dto';
 import { UserDto } from 'api/modules/users/dto/user.dto';
-import { push } from 'connected-react-router';
 import { GENERIC_ERROR } from 'messages';
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useHistory, useLocation } from 'react-router-dom';
 import ActionButton from 'shared/components/ActionButton';
 import PanelContainer from 'shared/components/Container/PanelContainer';
 import { Divider } from 'shared/components/Divider';
@@ -16,55 +18,74 @@ import { Select } from 'shared/components/Select';
 import { Stack } from 'shared/components/Stack';
 import { Tile } from 'shared/components/Tile';
 import { Route } from 'shared/UrlRoute';
+import { Mode } from 'util/mode';
 import { Status } from 'util/status';
 import SelectResource from '../../../shared/components/SelectResource';
 import SelectRole from '../../../shared/components/SelectRole';
 import SelectUser from '../../../shared/components/SelectUser';
-import { createEmptyActionsSet, mergeChanges } from '../util';
+import {
+  checkIfHasChanges,
+  createEmptyActionsSet,
+  extractActionsFromPermission,
+  mergeChanges,
+} from '../util';
 import * as Styled from './styled';
 
 type AssigneeType = 'User' | 'Role';
 const assigneeOptions: AssigneeType[] = ['User', 'Role'];
 
-const CreatePermission = () => {
-  const dispatch = useDispatch();
+const PermissionForm = () => {
+  const history = useHistory();
+
+  const { state: resourcePermission } = useLocation<ResourcePermissionDto>();
 
   const [status, setStatus] = useState(Status.Idle);
   const [resource, setResource] = useState<ResourceDto>();
-  const [assigneeType, setAssigneeType] = useState<AssigneeType>('User');
-  const [userId, setUserId] = useState<string>();
-  const [roleId, setRoleId] = useState<string>();
-  const [actions, setActions] = useState(createEmptyActionsSet());
+  const [assigneeType, setAssigneeType] = useState<AssigneeType>(
+    resourcePermission?.roleId ? 'Role' : 'User',
+  );
+  const [userId, setUserId] = useState<string | undefined>(
+    resourcePermission?.userId,
+  );
+  const [roleId, setRoleId] = useState<string | undefined>(
+    resourcePermission?.roleId,
+  );
+  const [actions, setActions] = useState(
+    resourcePermission
+      ? extractActionsFromPermission(resourcePermission)
+      : createEmptyActionsSet(),
+  );
+
+  const mode: Mode = resourcePermission ? Mode.Editing : Mode.Creating;
+  const isCreating = mode === Mode.Creating;
 
   const assigneeTypeIsUser = assigneeType === 'User';
   const assigneeTypeIsRole = assigneeType === 'Role';
 
   const hasValidUserFormData = assigneeTypeIsUser && !!userId && !!resource;
   const hasValidRoleFormData = assigneeTypeIsRole && !!roleId && !!resource;
-  const formValid = hasValidUserFormData || hasValidRoleFormData;
 
-  const handleAssigneeTypeChange = (assigneeType: AssigneeType) => {
+  const hasChanges =
+    resourcePermission &&
+    checkIfHasChanges(
+      extractActionsFromPermission(resourcePermission),
+      actions,
+    );
+
+  const formValid = isCreating
+    ? hasValidUserFormData || hasValidRoleFormData
+    : hasChanges;
+
+  const handleAssigneeTypeChange = (assigneeType: AssigneeType) =>
     setAssigneeType(assigneeType);
-  };
-
-  const handleResourceChange = (resource: ResourceDto) => {
-    setResource(resource);
-  };
-
-  const handleUserChange = (user: UserDto) => {
-    setUserId(user.id);
-  };
-
-  const handleRoleChange = (role: RoleDto) => {
-    setRoleId(role.id);
-  };
+  const handleResourceChange = (resource: ResourceDto) => setResource(resource);
+  const handleUserChange = (user: UserDto) => setUserId(user.id);
+  const handleRoleChange = (role: RoleDto) => setRoleId(role.id);
 
   const handleActionValueChange = (
     actionsChange: Partial<ResourceActionsDto>,
-  ) => {
-    setActions(mergeChanges(actions, actionsChange));
-  };
-
+  ) => setActions(mergeChanges(actions, actionsChange));
+  
   const handleCreate = async () => {
     if (!formValid) return;
 
@@ -76,7 +97,7 @@ const CreatePermission = () => {
         await grantPermissionToRole(roleId!, resource!.id, actions);
       }
 
-      dispatch(push(Route.Dashboard.Permissions));
+      history.push(Route.Dashboard.Permissions);
     } catch {
       setStatus(Status.Rejected);
     }
@@ -90,12 +111,20 @@ const CreatePermission = () => {
             <Stack gap={true} gapSize={3} alignItems='flex-start'>
               <Stack gap={true}>
                 <Label>Resource</Label>
-                <SelectResource onChange={handleResourceChange} />
+                {isCreating ? (
+                  <SelectResource onChange={handleResourceChange} />
+                ) : (
+                  <Styled.Preselected>
+                    {resourcePermission.resourceName}
+                  </Styled.Preselected>
+                )}
               </Stack>
               <Stack gap={true}>
                 <Label>Assignee type</Label>
                 <Select
                   name='type'
+                  value={assigneeType}
+                  disabled={!isCreating}
                   onChange={e =>
                     handleAssigneeTypeChange(e.target.value as AssigneeType)
                   }
@@ -109,12 +138,22 @@ const CreatePermission = () => {
               </Stack>
               <Stack gap={true}>
                 <Label>Assignee</Label>
-                {assigneeTypeIsUser && (
-                  <SelectUser onChange={handleUserChange} />
-                )}
-                {assigneeTypeIsRole && (
-                  <SelectRole onChange={handleRoleChange} />
-                )}
+                {assigneeTypeIsUser &&
+                  (isCreating ? (
+                    <SelectUser onChange={handleUserChange} />
+                  ) : (
+                    <Styled.Preselected>
+                      {resourcePermission.userUsername}
+                    </Styled.Preselected>
+                  ))}
+                {assigneeTypeIsRole &&
+                  (isCreating ? (
+                    <SelectRole onChange={handleRoleChange} />
+                  ) : (
+                    <Styled.Preselected>
+                      {resourcePermission.roleName}
+                    </Styled.Preselected>
+                  ))}
               </Stack>
               <Styled.CrudTable
                 actions={actions}
@@ -145,4 +184,4 @@ const CreatePermission = () => {
   );
 };
 
-export default CreatePermission;
+export default PermissionForm;

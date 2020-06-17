@@ -2,7 +2,7 @@ import { deleteRole, getRoles } from 'api';
 import { RoleDto } from 'api/modules/authorization/dto/role.dto';
 import { entityInitialLimit, entityInitialPage } from 'constant-values';
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import { Button } from 'shared/components/Button';
 import SandwichContainer from 'shared/components/Container/SandwichContainer';
 import { Divider } from 'shared/components/Divider';
@@ -48,10 +48,6 @@ const columns: (
   },
 ];
 
-const content = (roles: RoleDto[], columns: ColumnDef<RoleDto>[]) => {
-  return <Table data={roles} columns={columns} keyProp={'id'} />;
-};
-
 const Roles = () => {
   const history = useHistory();
 
@@ -67,11 +63,12 @@ const Roles = () => {
 
   const { refresh } = useLoadEntityPaginated(getRoles, setState, page, limit);
 
-  const handleCreateNewClick = () => {
-    history.push(Route.Dashboard.RolesNew);
+  const handleLimitChange = (value: number) => {
+    setLimit(value);
+    setPage(entityInitialPage);
   };
 
-  const onEditClick = (row: RoleDto) => {
+  const handleEdit = (row: RoleDto) => {
     history.push(Route.Dashboard.RolesEdit, row);
   };
 
@@ -94,30 +91,21 @@ const Roles = () => {
   };
 
   if (status === Status.Idle) return null;
+  if (status === Status.Loading) return <Loader />;
 
   return (
     <SandwichContainer
       header={
         <Flex gap={true} shouldWrap={true}>
-          <Button onClick={handleCreateNewClick}>Create New</Button>
+          <Link to={Route.Dashboard.PermissionsNew}>
+            <Button>Create New</Button>
+          </Link>
           <Divider />
-          <LimitSelector value={limit} onChange={setLimit}></LimitSelector>
+          <LimitSelector value={limit} onChange={handleLimitChange}></LimitSelector>
         </Flex>
       }
       content={
-        status === Status.Loading ? (
-          <Loader />
-        ) : (
-          content(
-            roles,
-            columns(
-              onEditClick,
-              handleDelete,
-              deleteStatus,
-              deleteInProgressId,
-            ),
-          )
-        )
+        <Table data={roles} columns={columns(handleEdit, handleDelete, deleteStatus, deleteInProgressId)} keyProp={'id'} />
       }
       footer={
         paginationData && (
